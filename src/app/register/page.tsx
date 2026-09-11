@@ -169,9 +169,9 @@ export default function ConceptPage() {
 
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <tbody>
-                  <div style={{ textAlign: 'center', margin: '32px 0 24px 0' }}>
-    <h3 style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '6px 20px', borderRadius: '20px', fontSize: '1.1rem', margin: '0' }}>Day 1</h3>
-    <div style={{ fontSize: '0.8rem', fontWeight: '300', color: '#64748b', marginTop: '4px' }}>12 Sep 2026</div>
+                  <div style={{ background: 'var(--primary)', color: 'white', padding: '12px 24px', borderRadius: '12px', margin: '32px 0 24px 0', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+    <span style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Day 1</span>
+    <span style={{ fontWeight: '300', fontSize: '0.95rem', opacity: 0.9 }}>- 12 Sep 2026</span>
   </div>
                   <ScheduleItem time="01:30 PM" title="റിപ്പോർട്ടിംഗ്" />
                   <ScheduleItem time="02:00 PM" title="രജിസ്ട്രേഷൻ" />
