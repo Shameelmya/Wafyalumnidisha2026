@@ -155,7 +155,7 @@ export default function Ticket() {
                <img src={photo} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
             </div>
             
-            <div style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '6px', lineHeight: 1.2 }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '6px', lineHeight: 1.2, padding: '0 24px' }}>
               {toTitleCase(registration.name)}
             </div>
             <div style={{ fontSize: '0.85rem', fontWeight: '500', opacity: 0.9, marginBottom: '2px' }}>
