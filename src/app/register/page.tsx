@@ -51,20 +51,20 @@ export default function ConceptPage() {
               
               <div style={{ textAlign: 'center', marginBottom: '40px', paddingBottom: '32px', borderBottom: '1px solid #f1f5f9' }}>
                 <h3 style={{ color: 'var(--primary)', marginBottom: '8px', fontSize: '1.5rem', fontWeight: '800', lineHeight: '1.2' }}>DISHA 2026<br/>WAFY LEADERS MEET</h3>
-                <p style={{ fontWeight: '500', color: 'var(--foreground)', fontSize: '0.9rem', marginBottom: '12px', textAlign: 'justify' }}></p>
+                <p style={{ fontWeight: '500', color: 'var(--foreground)', fontSize: '0.9rem', marginBottom: '12px', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto', textJustify: 'inter-word' }}></p>
                 <div style={{ display: 'inline-block', background: '#f8fafc', padding: '8px 16px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: '600', color: '#475569', border: '1px solid #e2e8f0' }}>
                   12 & 13 September 2026 <br/> Neebar Gate Natural Resort, Kakkadampoyil
                 </div>
               </div>
 
               <div style={{ marginBottom: '32px' }}>
-                <p style={{ marginBottom: '16px', textAlign: 'justify' }}>Leadership is not merely managing an organisation; it is the ability to visualise possibilities, identify needs, inspire people and transform ideas into meaningful action.</p>
-                <p style={{ marginBottom: '24px', textAlign: 'justify' }}>DISHA 2026 is conceived as a two-day orientation and vision-building camp for the newly elected WAFY leaders, marking the beginning of their two-year tenure. The camp aims to inspire leaders to think beyond routine activities and envision innovative initiatives for the educational, intellectual and social empowerment of the WAFY community and society at large.</p>
+                <p style={{ marginBottom: '16px', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto', textJustify: 'inter-word' }}>Leadership is not merely managing an organisation; it is the ability to visualise possibilities, identify needs, inspire people and transform ideas into meaningful action.</p>
+                <p style={{ marginBottom: '24px', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto', textJustify: 'inter-word' }}>DISHA 2026 is conceived as a two-day orientation and vision-building camp for the newly elected WAFY leaders, marking the beginning of their two-year tenure. The camp aims to inspire leaders to think beyond routine activities and envision innovative initiatives for the educational, intellectual and social empowerment of the WAFY community and society at large.</p>
                 
-                <p style={{ marginBottom: '12px', color: 'var(--foreground)', fontWeight: '700', textAlign: 'justify' }}>The Central Question of DISHA</p>
-                <p style={{ marginBottom: '24px', fontWeight: '500', color: '#334155', textAlign: 'justify' }}>“What meaningful difference can we create during our two-year tenure?”</p>
+                <p style={{ marginBottom: '12px', color: 'var(--foreground)', fontWeight: '700', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto', textJustify: 'inter-word' }}>The Central Question of DISHA</p>
+                <p style={{ marginBottom: '24px', fontWeight: '500', color: '#334155', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto', textJustify: 'inter-word' }}>“What meaningful difference can we create during our two-year tenure?”</p>
                 
-                <p style={{ marginBottom: '16px', textAlign: 'justify' }}>Participants will come prepared to think, brainstorm and design. Each committee will examine the needs and opportunities within its area, develop innovative ideas and translate them into programmes that can create sustainable impact.</p>
+                <p style={{ marginBottom: '16px', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto', textJustify: 'inter-word' }}>Participants will come prepared to think, brainstorm and design. Each committee will examine the needs and opportunities within its area, develop innovative ideas and translate them into programmes that can create sustainable impact.</p>
               </div>
 
               <div style={{ marginBottom: '32px' }}>
@@ -81,8 +81,8 @@ export default function ConceptPage() {
                    ))}
                 </div>
                 <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                  <p style={{ fontWeight: '600', color: '#64748b', marginBottom: '4px', textAlign: 'justify' }}>DISHA seeks to move:</p>
-                  <p style={{ fontWeight: '500', color: 'var(--foreground)', textAlign: 'justify' }}>Leadership → Vision → Ideas → Programmes → Impact</p>
+                  <p style={{ fontWeight: '600', color: '#64748b', marginBottom: '4px', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto', textJustify: 'inter-word' }}>DISHA seeks to move:</p>
+                  <p style={{ fontWeight: '500', color: 'var(--foreground)', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto', textJustify: 'inter-word' }}>Leadership → Vision → Ideas → Programmes → Impact</p>
                 </div>
                 <p>Thus, the camp will function not merely as an orientation programme, but as a creative laboratory for developing WAFY's future programmes.</p>
               </div>
@@ -118,7 +118,7 @@ export default function ConceptPage() {
                     <span style={{ width: '20px', height: '2px', background: 'var(--primary)' }}></span>
                     Expected Outcome
                   </h4>
-                  <p style={{ marginBottom: '16px', fontSize: '0.9rem', textAlign: 'justify' }}>Every committee should ideally leave the camp with a clear two-year action direction:</p>
+                  <p style={{ marginBottom: '16px', fontSize: '0.9rem', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto', textJustify: 'inter-word' }}>Every committee should ideally leave the camp with a clear two-year action direction:</p>
                   <ul style={{ paddingLeft: "0", listStyleType: "none", margin: "0", display: "flex", flexDirection: "column", gap: "6px", textAlign: "justify" }}>
                     {['A vision for its area of responsibility', 'Key challenges and opportunities', 'Innovative programme ideas', 'Priority initiatives and flagship programmes', 'A preliminary implementation plan', 'Possible collaborators and resource persons'].map((li, i) => (
                       <li key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
@@ -163,7 +163,7 @@ export default function ConceptPage() {
             <div style={{ marginTop: '32px' }}>
               <div style={{ textAlign: 'center', marginBottom: '32px' }}>
                 <h3 style={{ color: 'var(--primary)', fontSize: '1.4rem', fontWeight: '800' }}>DISHA 2026</h3>
-                <p style={{ fontWeight: '600', color: 'var(--foreground)', fontSize: '1rem', textAlign: 'justify' }}>Leaders' Conclave</p>
+                <p style={{ fontWeight: '600', color: 'var(--foreground)', fontSize: '1rem', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto', textJustify: 'inter-word' }}>Leaders' Conclave</p>
               </div>
 
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
