@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Cropper from 'react-easy-crop';
 import { db } from '@/lib/firebase';
-import { doc, getDocs, setDoc, serverTimestamp, runTransaction, collection } from 'firebase/firestore';
+import { doc, getDoc, getDocs, setDoc, serverTimestamp, runTransaction, collection } from 'firebase/firestore';
 
 function normalizePhone(phone: string) {
   let digits = phone.replace(/[^0-9]/g, '');
@@ -211,21 +211,13 @@ export default function RegistrationForm() {
         return;
       }
 
-      const qSnap = await getDocs(collection(db, 'registrations'));
-      let isDuplicate = false;
-      qSnap.forEach(docSnap => {
-        if (normalizePhone(docSnap.id) === normPhone || normalizePhone(docSnap.data().phone || '') === normPhone) {
-          isDuplicate = true;
-        }
-      });
-
-      if (isDuplicate) {
-        setError('Phone number is already registered.');
+      const docRef = doc(db, 'registrations', normPhone);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setError('This phone number is already registered!');
         setLoading(false);
         return;
       }
-
-      const docRef = doc(db, 'registrations', normPhone);
       const counterRef = doc(db, 'config', 'counter');
       
       const regNumber = await runTransaction(db, async (transaction) => {
