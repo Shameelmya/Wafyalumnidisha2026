@@ -143,7 +143,7 @@ export default function Ticket() {
             <div style={{ position: 'absolute', top: '20px', left: '20px', width: '65px', height: '65px', filter: 'brightness(0) invert(1)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent' }}>
               <img src="/alum.png" alt="Alumni Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
             </div>
-            <div style={{ position: 'absolute', top: '6px', right: '8px', width: '100px', height: '100px', filter: 'brightness(0) invert(1)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent' }}>
+            <div style={{ position: 'absolute', top: '12px', right: '16px', width: '75px', height: '75px', filter: 'brightness(0) invert(1)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent' }}>
               <img src="/disha.png" alt="Disha Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
             </div>
 
