@@ -27,7 +27,7 @@ function toTitleCase(str: string) {
 
 const designationsList = [
   "State Executive", "State Working Committee Member", "District President",
-  "District Secretary", "District Working Secretary", "District ട്രഷറർ",
+  "District Secretary", "District Working Secretary", "District Treasurer",
   "SEM Chairman", "SEM Convenor", "NEM Chairman", "NEM Convenor",
   "Waa Media Chairman", "Waa Media Convenor", "Debate Council Chairman",
   "Debate Council Convenor", "Way Books Chairman", "Way Books Convenor",
