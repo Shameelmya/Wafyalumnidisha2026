@@ -320,7 +320,7 @@ export default function RegistrationForm() {
         
         <div className="input-wrapper">
           <label className="input-label">Full Name</label>
-          <input required type="text" name="name" value={formData.name} onChange={handleChange} className="input-field" placeholder="Enter your full name" />
+          <input required type="text" name="name" value={formData.name} onChange={handleChange} className="input-field" placeholder="" />
         </div>
 
         <div className="input-wrapper" style={{ position: 'relative' }}>
@@ -329,14 +329,14 @@ export default function RegistrationForm() {
             options={designationsList} 
             value={formData.designation} 
             onChange={(val) => setFormData({ ...formData, designation: val })} 
-            placeholder="Select your designation" 
+            placeholder="" 
           />
         </div>
 
         {formData.designation === 'Other' && (
           <div className="input-wrapper">
             <label className="input-label">Enter Designation</label>
-            <input required type="text" value={customDesignation} onChange={(e) => setCustomDesignation(e.target.value)} className="input-field" placeholder="E.g. Vice President" />
+            <input required type="text" value={customDesignation} onChange={(e) => setCustomDesignation(e.target.value)} className="input-field" placeholder="" />
           </div>
         )}
         
@@ -346,14 +346,14 @@ export default function RegistrationForm() {
             options={districtsList} 
             value={formData.district} 
             onChange={(val) => setFormData({ ...formData, district: val })} 
-            placeholder="Select your district" 
+            placeholder="" 
           />
         </div>
 
         {formData.district === 'Other' && (
           <div className="input-wrapper">
             <label className="input-label">Enter District</label>
-            <input required type="text" value={customDistrict} onChange={(e) => setCustomDistrict(e.target.value)} className="input-field" placeholder="Your District Name" />
+            <input required type="text" value={customDistrict} onChange={(e) => setCustomDistrict(e.target.value)} className="input-field" placeholder="" />
           </div>
         )}
         
@@ -363,7 +363,7 @@ export default function RegistrationForm() {
             e.target.value = e.target.value.replace(/[^0-9]/g, '');
             handleChange(e);
             if(sameAsPhone) setFormData(prev => ({...prev, whatsapp: e.target.value}));
-          }} className="input-field" pattern="[0-9]*" inputMode="numeric" placeholder="10-digit mobile number" />
+          }} className="input-field" pattern="[0-9]*" inputMode="numeric" placeholder="" />
         </div>
 
         <div className="input-wrapper">
@@ -378,7 +378,7 @@ export default function RegistrationForm() {
             <input required type="tel" name="whatsapp" value={formData.whatsapp} onChange={(e) => {
               e.target.value = e.target.value.replace(/[^0-9]/g, '');
               handleChange(e);
-            }} className="input-field" pattern="[0-9]*" inputMode="numeric" placeholder="WhatsApp mobile number" />
+            }} className="input-field" pattern="[0-9]*" inputMode="numeric" placeholder="" />
           )}
         </div>
 
