@@ -55,6 +55,7 @@ export default function ConceptPage() {
                 <div style={{ display: 'inline-block', fontSize: '0.85rem', fontWeight: '600', color: '#475569' }}>
                   12 & 13 September 2026 <br/> Neebar Gate Natural Resort, Kakkadampoyil
                 </div>
+                <div style={{ marginTop: '24px', borderBottom: '1px solid #e2e8f0', width: '50%', margin: '24px auto 0' }}></div>
               </div>
 
               <div style={{ marginBottom: '32px' }}>
