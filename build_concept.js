@@ -1,4 +1,6 @@
-"use client";
+const fs = require('fs');
+
+const pageContent = `"use client";
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -51,9 +53,9 @@ export default function ConceptPage() {
               
               <div style={{ textAlign: 'center', marginBottom: '40px', paddingBottom: '32px', borderBottom: '1px solid #f1f5f9' }}>
                 <h3 style={{ color: 'var(--primary)', marginBottom: '8px', fontSize: '1.5rem', fontWeight: '800', lineHeight: '1.2' }}>DISHA 2026<br/>WAFY LEADERS MEET</h3>
-                <p style={{ fontWeight: '500', color: 'var(--foreground)', fontSize: '0.9rem', marginBottom: '12px' }}><span style={{ fontWeight: 600 }}>Orientation, Vision Building & Programme Design Camp</span></p>
+                <p style={{ fontWeight: '500', color: 'var(--foreground)', fontSize: '0.9rem', marginBottom: '12px' }}>Orientation, Vision Building & Programme Design Camp</p>
                 <div style={{ display: 'inline-block', background: '#f8fafc', padding: '8px 16px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: '600', color: '#475569', border: '1px solid #e2e8f0' }}>
-                  12 & 13 September 2026 <br/> Neebar Gate Natural Resort, Kakkadampoyil
+                  12 & 13 September 2026 | Neebar Gate Natural Resort, Kakkadampoyil
                 </div>
               </div>
 
@@ -101,7 +103,7 @@ export default function ConceptPage() {
                     { title: 'WAY Book', desc: 'Identify and nurture thinkers, writers and intellectual contributors among WAFY graduates.' },
                     { title: 'WAY Media', desc: 'Develop presenters, communicators and media talents through innovative media and digital platforms.' },
                     { title: 'Higher Education Council', desc: 'Create pathways for higher education, competitive examinations, high-profile government jobs and professional opportunities.' },
-                    { title: 'National Empowerment Mission', desc: 'Expand and replicate WAFY\'s educational empowerment initiatives for rural and underserved communities across India.' },
+                    { title: 'National Empowerment Mission', desc: 'Expand and replicate WAFY\\'s educational empowerment initiatives for rural and underserved communities across India.' },
                     { title: 'Debate Council', desc: 'Function as an academic think tank, organising consultations, debates and intellectual forums on contemporary issues and generating informed perspectives and recommendations.' }
                   ].map((item, idx) => (
                     <div key={idx} style={{ background: '#ffffff', border: '1px solid #f1f5f9', borderRadius: '12px', padding: '20px' }}>
@@ -119,7 +121,7 @@ export default function ConceptPage() {
                     Expected Outcome
                   </h4>
                   <p style={{ marginBottom: '16px', fontSize: '0.9rem' }}>Every committee should ideally leave the camp with a clear two-year action direction:</p>
-                  <ul style={{ paddingLeft: "0", listStyleType: "none", margin: "0", display: "flex", flexDirection: "column", gap: "6px", textAlign: "justify" }}>
+                  <ul style={{ paddingLeft: '0', listStyleType: 'none', margin: '0', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     {['A vision for its area of responsibility', 'Key challenges and opportunities', 'Innovative programme ideas', 'Priority initiatives and flagship programmes', 'A preliminary implementation plan', 'Possible collaborators and resource persons'].map((li, i) => (
                       <li key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                         <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>•</span>
@@ -134,7 +136,7 @@ export default function ConceptPage() {
                     <span style={{ width: '20px', height: '2px', background: 'var(--primary)' }}></span>
                     Objectives of the Camp
                   </h4>
-                  <ul style={{ paddingLeft: "0", listStyleType: "none", margin: "0", display: "flex", flexDirection: "column", gap: "6px", textAlign: "justify" }}>
+                  <ul style={{ paddingLeft: '0', listStyleType: 'none', margin: '0', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     {['Orient newly elected leaders towards purposeful and visionary leadership.', 'Identify challenges and develop innovative solutions through collective action.', 'Design state, district and specialised flagship programmes and initiatives.', 'Strengthen grassroots leadership and activate district and constituency committees.', 'Create pathways to higher education, competitive examinations and professional excellence.', 'Extend educational empowerment to rural and underserved communities.', 'Develop a clear two-year vision, priorities and action framework for the new leadership.'].map((li, i) => (
                       <li key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                         <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>•</span>
@@ -168,22 +170,21 @@ export default function ConceptPage() {
 
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <tbody>
-                  <h3 style={{ fontSize: "1.2rem", color: "var(--primary)", borderBottom: "2px solid #f1f5f9", paddingBottom: "8px", marginBottom: "16px", marginTop: 0 }}>Day 1</h3>
                   <ScheduleItem time="01:30 PM" title="റിപ്പോർട്ടിംഗ്" />
                   <ScheduleItem time="02:00 PM" title="രജിസ്ട്രേഷൻ" />
-                  <ScheduleItem time="02:30 PM" tag="Session 01" title="പഥം" desc="ഡോ. നൗഫൽ വാഫി മേലാറ്റൂർ (ക്യാമ്പ് ഡയറക്ടർ)" />
-                  <ScheduleItem time="02:45 PM" tag="Session 02" title="ദർശനം" desc="ഡോ. ഇദ് രീസ്" />
+                  <ScheduleItem time="02:30 PM" title="പഥം" desc="ഡോ. നൗഫൽ വാഫി മേലാറ്റൂർ (ക്യാമ്പ് ഡയറക്ടർ)" />
+                  <ScheduleItem time="02:45 PM" tag="Session 01" title="ദർശനം" desc="ഡോ. ഇദ് രീസ്" />
                   <ScheduleItem time="04:00 PM" title="ബ്രേക്ക്‌" isBreak />
-                  <ScheduleItem time="04:15 PM" tag="Session 03" title="സ്പർശം" desc="അബൂബക്കർ ഹുദവി" />
+                  <ScheduleItem time="04:15 PM" tag="Session 02" title="സ്പർശം" desc="അബൂബക്കർ ഹുദവി" />
                   <ScheduleItem time="05:30 PM" title="പ്രാർത്ഥന, ചായ, ഉല്ലാസം" isBreak />
-                  <ScheduleItem time="07:00 PM" tag="Session 04" title="വശ്യം" desc="ഡോ. അബ്ദുൽ ബർറ് വാഫി" />
-                  <ScheduleItem time="07:30 PM" tag="Session 05" title="ദീപ്തി" desc="ഉസ്താദ് അബ്ദുൽ ഹക്കീം ഫൈസി ആദൃശ്ശേരി" />
-                  <ScheduleItem time="09:00 PM" title="ഭക്ഷണം, വിശ്രമം" isBreak />
+                  <ScheduleItem time="07:00 PM" tag="Session 03" title="വശ്യം" desc="ഡോ. അബ്ദുൽ ബർറ് വാഫി" />
+                  <ScheduleItem time="07:30 PM" tag="Session 04" title="ദീപ്തി" desc="ഉസ്താദ് അബ്ദുൽ ഹക്കീം ഫൈസി ആദൃശ്ശേരി" />
+                  <ScheduleItem time="09:00 PM" title="ഭക്ഷണം, ഉല്ലാസം, വിശ്രമം" isBreak />
                   
                   <tr><td colSpan={2} style={{ padding: '32px 0 16px', fontWeight: '800', color: 'var(--foreground)', fontSize: '1.1rem', textAlign: 'center' }}>Day 2 (13 Sep 2026)</td></tr>
                   
                   <ScheduleItem time="05:00 AM" title="പ്രാർത്ഥന" isBreak />
-                  <ScheduleItem time="06:00 AM" title="ദൃശ്യം" />
+                  <ScheduleItem time="06:00 AM" title="ദൃശ്യം (Morning Vibe)" />
                   <ScheduleItem time="08:00 AM" title="പ്രഭാത ഭക്ഷണം" isBreak />
                   <ScheduleItem time="08:30 AM" tag="Session 06" title="ദിശൻ (ബ്രെയിൻ സ്റ്റോമിംഗ്)" />
                   <ScheduleItem time="10:00 AM" title="ബ്രേക്ക്" isBreak />
@@ -204,3 +205,7 @@ export default function ConceptPage() {
     </div>
   );
 }
+`;
+
+fs.writeFileSync('src/app/register/page.tsx', pageContent);
+console.log('register/page.tsx rewritten successfully!');

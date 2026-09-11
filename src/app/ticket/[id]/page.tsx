@@ -119,15 +119,11 @@ export default function Ticket() {
       </p>
 
       {/* TICKET WRAPPER */}
-      <div style={{ filter: 'drop-shadow(0 10px 25px rgba(0,0,0,0.1))', width: '100%', maxWidth: '340px', marginBottom: '32px' }}>
+      <div style={{ filter: 'drop-shadow(0 10px 25px rgba(0,0,0,0.15))', width: '100%', maxWidth: '340px', marginBottom: '24px' }}>
         <div ref={ticketRef} id="export-ticket" style={{ 
           background: 'white', 
           borderRadius: '20px',
           overflow: 'hidden',
-          WebkitMaskImage: 'radial-gradient(circle at 0px 175px, transparent 16px, black 17px), radial-gradient(circle at 100% 175px, transparent 16px, black 17px)',
-          WebkitMaskSize: '51% 100%',
-          WebkitMaskPosition: 'left, right',
-          WebkitMaskRepeat: 'no-repeat',
           display: 'flex',
           flexDirection: 'column'
         }}>
@@ -136,51 +132,57 @@ export default function Ticket() {
           <div style={{ 
             background: 'linear-gradient(135deg, var(--primary), var(--primary-alt))', 
             color: 'white', 
-            padding: '24px 20px',
+            padding: '40px 20px 32px 20px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            height: '175px',
-            justifyContent: 'center',
-            textAlign: 'center'
+            textAlign: 'center',
+            position: 'relative'
           }}>
-            <div style={{ width: '60px', height: '60px', borderRadius: '50%', overflow: 'hidden', marginBottom: '12px', background: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {/* Corner Logos */}
+            <img src="/alum.png" alt="Alumni Logo" style={{ position: 'absolute', top: '20px', left: '20px', height: '45px', width: 'auto', objectFit: 'contain' }} />
+            <img src="/disha.png" alt="Disha Logo" style={{ position: 'absolute', top: '20px', right: '20px', height: '45px', width: 'auto', objectFit: 'contain' }} />
+
+            <div style={{ width: '120px', height: '120px', borderRadius: '50%', overflow: 'hidden', marginBottom: '16px', background: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: '0 4px 15px rgba(0,0,0,0.2)', border: '3px solid rgba(255,255,255,0.2)', marginTop: '20px' }}>
                <img src={photo} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-            <div style={{ fontSize: '0.75rem', letterSpacing: '0.05em', opacity: 0.9, marginBottom: '4px', textTransform: 'uppercase', fontWeight: '600' }}>
-              Reg No: {registration.regNumber}
+            <div style={{ fontSize: '0.8rem', letterSpacing: '0.05em', opacity: 0.9, marginBottom: '6px', textTransform: 'uppercase', fontWeight: '600', background: 'rgba(0,0,0,0.2)', padding: '4px 12px', borderRadius: '12px' }}>
+              ID: {registration.regNumber}
             </div>
-            <div style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '2px', lineHeight: 1.1 }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '8px', lineHeight: 1.2 }}>
               {toTitleCase(registration.name)}
             </div>
-            <div style={{ fontSize: '0.85rem', fontWeight: '500', opacity: 0.95, marginBottom: '2px' }}>
+            <div style={{ fontSize: '0.95rem', fontWeight: '500', opacity: 0.95, marginBottom: '4px' }}>
               {registration.designation}
             </div>
-            <div style={{ fontSize: '0.75rem', opacity: 0.8, lineHeight: 1.2 }}>
+            <div style={{ fontSize: '0.85rem', opacity: 0.8, lineHeight: 1.2, marginBottom: '4px' }}>
               {registration.district}
+            </div>
+            <div style={{ fontSize: '0.85rem', opacity: 0.8, lineHeight: 1.2 }}>
+              Ph: {phone}
             </div>
           </div>
 
           {/* Dashed Divider Line */}
-          <div style={{ width: '100%', height: '0', borderTop: '2px dashed rgba(0,0,0,0.15)', position: 'relative' }}></div>
+          <div style={{ width: '100%', height: '0', borderTop: '2px dashed rgba(0,0,0,0.15)' }}></div>
 
           {/* Bottom White Part */}
           <div style={{ 
             background: 'white', 
-            padding: '28px 20px', 
+            padding: '32px 20px', 
             display: 'flex', 
             flexDirection: 'column', 
             alignItems: 'center' 
           }}>
-            <QRCodeSVG value={registration.regNumber} size={150} level="M" />
-            <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginTop: '12px', marginBottom: '24px' }}>Scan for entry</div>
-
-            <div style={{ width: '95%', height: '70px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <img src="/poster.jpeg" alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
-            </div>
+            <QRCodeSVG value={registration.regNumber} size={160} level="M" />
+            <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '16px' }}>Scan for entry</div>
           </div>
 
         </div>
+      </div>
+
+      <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'center' }}>
+        <img src="/logo.png" alt="Logo" style={{ maxWidth: '250px', height: 'auto', objectFit: 'contain' }} />
       </div>
 
       <div style={{ display: 'flex', gap: '12px', width: '100%', maxWidth: '340px' }}>
