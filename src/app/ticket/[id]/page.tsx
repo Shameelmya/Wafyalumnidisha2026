@@ -53,7 +53,7 @@ export default function Ticket() {
   const handleDownload = async () => {
     if (ticketRef.current) {
       const canvas = await html2canvas(ticketRef.current, { 
-        scale: 4, 
+        scale: 8, useCORS: true, allowTaint: true, logging: false, 
         backgroundColor: '#fafafa',
         onclone: (clonedDoc) => {
           const el = clonedDoc.getElementById('export-ticket');
@@ -74,7 +74,7 @@ export default function Ticket() {
   const handleShare = async () => {
     if (ticketRef.current && navigator.share) {
       const canvas = await html2canvas(ticketRef.current, { 
-        scale: 4, 
+        scale: 8, useCORS: true, allowTaint: true, logging: false, 
         backgroundColor: '#fafafa',
         onclone: (clonedDoc) => {
           const el = clonedDoc.getElementById('export-ticket');
