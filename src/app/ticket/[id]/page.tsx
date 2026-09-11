@@ -159,10 +159,10 @@ export default function Ticket() {
               {toTitleCase(registration.name)}
             </div>
             <div style={{ fontSize: '0.8rem', fontWeight: '500', opacity: 0.9, marginBottom: '6px' }}>
-              {registration.designation} | {registration.district}
+              {registration.designation}
             </div>
             <div style={{ fontSize: '0.75rem', opacity: 0.8, lineHeight: 1.2 }}>
-              Ph: {phone}
+              {registration.district} | Ph: {phone}
             </div>
           </div>
 
