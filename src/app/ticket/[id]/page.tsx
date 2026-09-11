@@ -140,8 +140,12 @@ export default function Ticket() {
             position: 'relative'
           }}>
             {/* Corner Logos */}
-            <img src="/alum.png" alt="Alumni Logo" style={{ position: 'absolute', top: '20px', left: '20px', height: '45px', width: 'auto', objectFit: 'contain' }} />
-            <img src="/disha.png" alt="Disha Logo" style={{ position: 'absolute', top: '20px', right: '20px', height: '45px', width: 'auto', objectFit: 'contain' }} />
+            <div style={{ position: 'absolute', top: '20px', left: '20px', width: '55px', height: '55px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent' }}>
+              <img src="/alum.png" alt="Alumni Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+            </div>
+            <div style={{ position: 'absolute', top: '20px', right: '20px', width: '55px', height: '55px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent' }}>
+              <img src="/disha.png" alt="Disha Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+            </div>
 
             <div style={{ width: '120px', height: '120px', borderRadius: '50%', overflow: 'hidden', marginBottom: '16px', background: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: '0 4px 15px rgba(0,0,0,0.2)', border: '3px solid rgba(255,255,255,0.2)', marginTop: '20px' }}>
                <img src={photo} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
