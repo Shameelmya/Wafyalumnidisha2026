@@ -23,7 +23,7 @@ export default function RootLayout({
         <main>{children}</main>
         <footer style={{ textAlign: 'center', padding: '0px 20px 24px', color: 'var(--secondary-text)', fontSize: '14px', lineHeight: '1.6', marginTop: '-10px' }}>
           <p style={{ marginTop: '0', fontSize: '0.9rem' }}>
-            Developed by <a href="https://wa.me/917559865389?text=Hi%20Dot%20Projects%2C%20we%20experienced%20your%20registration%20website%20for%20DISHA%202026%20WAFY%20Leaders%20Meet%20events%2C%20we%20have%20an%20enquiry." target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', fontWeight: '600', textDecoration: 'none' }}>Dot Projects</a>
+            Developed by <a href="https://wa.me/917559865389?text=Hi%20Dot%20Projects%2C%20we%20experienced%20your%20registration%20website%20for%20DISHA%202026%20WAFY%20Leaders%20Meet%20events%2C%20we%20have%20an%20enquiry." target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', fontWeight: '600', textDecoration: 'underline' }}>Dot Projects</a>
           </p>
           <div style={{ marginTop: '12px' }}>
             <Link href="/admin" style={{ opacity: 0.5, textDecoration: 'none', color: 'inherit', fontSize: '12px' }}>
