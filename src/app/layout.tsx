@@ -14,6 +14,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@100..900&display=swap" rel="stylesheet" />
+      </head>
       <body>
         <main>{children}</main>
         <footer style={{ textAlign: 'center', padding: '24px 20px', color: 'var(--secondary-text)', fontSize: '14px', lineHeight: '1.6' }}>
