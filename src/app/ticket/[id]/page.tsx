@@ -184,9 +184,6 @@ export default function Ticket() {
 
         </div>
       </div>
-      </div>
-
-      
 
       <div style={{ display: 'flex', gap: '12px', width: '100%', maxWidth: '340px' }}>
         <button onClick={handleDownload} className="btn-primary" style={{ flex: 1, padding: '16px 0' }}>
