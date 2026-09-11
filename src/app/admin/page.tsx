@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
@@ -342,7 +342,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="admin-container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '80px', designation: 'relative' }}>
+    <div className="admin-container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '80px', position: 'relative' }}>
       
       {/* HEADER WITH ICON BUTTONS */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
@@ -583,7 +583,6 @@ export default function AdminDashboard() {
                 )}
               </div>
             </div>
-            </div>
 
             {/* Designation Stats */}
             <div>
@@ -714,7 +713,7 @@ export default function AdminDashboard() {
 
       {/* DELETE CONFIRMATION MODAL */}
       {deleteModal.isOpen && (
-        <div style={{ designation: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <div className="glass animate-fade-in" style={{ background: 'white', padding: '32px', borderRadius: '24px', width: '100%', maxWidth: '400px', textAlign: 'center', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}>
             <h3 style={{ color: 'var(--danger)', marginBottom: '16px', fontSize: '1.4rem' }}>Confirm Deletion</h3>
             <p style={{ color: 'var(--secondary-text)', marginBottom: '32px', lineHeight: '1.5' }}>
@@ -732,7 +731,7 @@ export default function AdminDashboard() {
 
       {/* EDIT MODAL */}
       {editModal.isOpen && editModal.data && (
-        <div style={{ designation: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <div className="glass animate-fade-in" style={{ background: 'white', padding: '32px', borderRadius: '24px', width: '100%', maxWidth: '400px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}>
             <h3 style={{ marginBottom: '24px', fontSize: '1.4rem', color: 'var(--primary)' }}>Edit Registration</h3>
             <form onSubmit={saveEdit} style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'left' }}>
