@@ -169,10 +169,14 @@ export default function ConceptPage() {
 
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <tbody>
-                  <div style={{ background: 'var(--primary)', color: 'white', padding: '12px 24px', borderRadius: '12px', margin: '32px 0 24px 0', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
-    <span style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Day 1</span>
-    <span style={{ fontWeight: '300', fontSize: '0.95rem', opacity: 0.9 }}>- 12 Sep 2026</span>
-  </div>
+                  <tr>
+    <td colSpan={2} style={{ padding: '32px 0 24px 0' }}>
+      <div style={{ background: 'var(--primary)', color: 'white', padding: '12px 24px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+        <span style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Day 1</span>
+        <span style={{ fontWeight: '300', fontSize: '0.95rem', opacity: 0.9 }}>- 12 Sep 2026</span>
+      </div>
+    </td>
+  </tr>
                   <ScheduleItem time="01:30 PM" title="റിപ്പോർട്ടിംഗ്" />
                   <ScheduleItem time="02:00 PM" title="രജിസ്ട്രേഷൻ" />
                   <ScheduleItem time="02:30 PM" tag="Session 01" title="പഥം" desc="ഡോ. നൗഫൽ വാഫി മേലാറ്റൂർ (ക്യാമ്പ് ഡയറക്ടർ)" />
