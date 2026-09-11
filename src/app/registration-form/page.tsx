@@ -137,7 +137,21 @@ export default function RegistrationForm() {
       setPhotoFileName(file.name);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPhotoBase64(reader.result as string);
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const size = Math.min(img.width, img.height);
+          canvas.width = 400;
+          canvas.height = 400;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            const startX = (img.width - size) / 2;
+            const startY = (img.height - size) / 2;
+            ctx.drawImage(img, startX, startY, size, size, 0, 0, 400, 400);
+            setPhotoBase64(canvas.toDataURL('image/jpeg', 0.8));
+          }
+        };
+        img.src = reader.result as string;
       };
       reader.readAsDataURL(file);
     } else {
@@ -210,7 +224,7 @@ export default function RegistrationForm() {
       });
 
       if (photoBase64) {
-        sessionStorage.setItem(`photo_${normPhone}`, photoBase64);
+        localStorage.setItem(`photo_${normPhone}`, photoBase64);
       }
 
       router.push(`/ticket/${normPhone}`);
@@ -228,7 +242,7 @@ export default function RegistrationForm() {
         &larr; Back
       </button>
       
-      <h1 style={{ marginBottom: '32px', textAlign: 'center' }}>Conclave Registration</h1>
+      <h1 style={{ marginBottom: '32px', textAlign: 'center' }}>Camp Registration</h1>
 
       {error && (
         <div style={{ backgroundColor: '#fee2e2', color: 'var(--danger)', padding: '16px', borderRadius: '16px', marginBottom: '24px', fontWeight: '500', fontSize: '0.9rem', textAlign: 'center' }}>

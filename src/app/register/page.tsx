@@ -51,7 +51,7 @@ export default function ConceptPage() {
               
               <div style={{ textAlign: 'center', marginBottom: '40px', paddingBottom: '32px', borderBottom: '1px solid #f1f5f9' }}>
                 <h3 style={{ color: 'var(--primary)', marginBottom: '8px', fontSize: '1.5rem', fontWeight: '800', lineHeight: '1.2' }}>DISHA 2026<br/>WAFY LEADERS MEET</h3>
-                <p style={{ fontWeight: '500', color: 'var(--foreground)', fontSize: '0.9rem', marginBottom: '12px' }}><span style={{ fontWeight: 600 }}>Orientation, Vision Building & Programme Design Camp</span></p>
+                <p style={{ fontWeight: '500', color: 'var(--foreground)', fontSize: '0.9rem', marginBottom: '12px' }}></p>
                 <div style={{ display: 'inline-block', background: '#f8fafc', padding: '8px 16px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: '600', color: '#475569', border: '1px solid #e2e8f0' }}>
                   12 & 13 September 2026 <br/> Neebar Gate Natural Resort, Kakkadampoyil
                 </div>
@@ -168,7 +168,10 @@ export default function ConceptPage() {
 
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <tbody>
-                  <h3 style={{ fontSize: "1.2rem", color: "var(--primary)", borderBottom: "2px solid #f1f5f9", paddingBottom: "8px", marginBottom: "16px", marginTop: 0 }}>Day 1</h3>
+                  <div style={{ textAlign: 'center', margin: '32px 0 24px 0' }}>
+    <h3 style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '6px 20px', borderRadius: '20px', fontSize: '1.1rem', margin: '0' }}>Day 1</h3>
+    <div style={{ fontSize: '0.8rem', fontWeight: '300', color: '#64748b', marginTop: '4px' }}>12 Sep 2026</div>
+  </div>
                   <ScheduleItem time="01:30 PM" title="റിപ്പോർട്ടിംഗ്" />
                   <ScheduleItem time="02:00 PM" title="രജിസ്ട്രേഷൻ" />
                   <ScheduleItem time="02:30 PM" tag="Session 01" title="പഥം" desc="ഡോ. നൗഫൽ വാഫി മേലാറ്റൂർ (ക്യാമ്പ് ഡയറക്ടർ)" />
