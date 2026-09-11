@@ -9,8 +9,8 @@ export default function Home() {
   const [isRegOpen, setIsRegOpen] = useState(true);
 
   useEffect(() => {
-    // SEP 12 2026, 09:00 AM target date
-    const targetDate = new Date("2026-09-12T09:00:00").getTime();
+    // SEP 12 2026, 02:30 PM target date
+    const targetDate = new Date("2026-09-12T14:30:00").getTime();
     
     const calculateTime = () => {
       const now = new Date().getTime();
