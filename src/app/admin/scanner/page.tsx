@@ -78,7 +78,7 @@ export default function Scanner() {
     setError('');
     
     try {
-      // The QR code contains the Reg Number (e.g., MLA-XXXX)
+      // The QR code contains the Reg Number (e.g., WDCXXXX)
       const q = query(collection(db, 'registrations'), where('regNumber', '==', id));
       const querySnapshot = await getDocs(q);
 
