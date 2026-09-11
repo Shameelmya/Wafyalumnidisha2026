@@ -321,7 +321,7 @@ export default function RegistrationForm() {
             options={designationsList} 
             value={formData.designation} 
             onChange={(val) => setFormData({ ...formData, designation: val })} 
-            placeholder="" 
+            placeholder="Select your designation" 
           />
         </div>
 
@@ -338,7 +338,7 @@ export default function RegistrationForm() {
             options={districtsList} 
             value={formData.district} 
             onChange={(val) => setFormData({ ...formData, district: val })} 
-            placeholder="" 
+            placeholder="Select your district" 
           />
         </div>
 

@@ -120,7 +120,7 @@ export default function ConceptPage() {
                     Expected Outcome
                   </h4>
                   <p style={{ marginBottom: '16px', fontSize: '0.9rem', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto', textJustify: 'inter-word' }}>Every committee should ideally leave the camp with a clear two-year action direction:</p>
-                  <ul style={{ paddingLeft: "0", listStyleType: "none", margin: "0", display: "flex", flexDirection: "column", gap: "6px", textAlign: "justify" }}>
+                  <ul style={{ paddingLeft: "0", listStyleType: "none", margin: "0", display: "flex", flexDirection: "column", gap: "6px", textAlign: "left" }}>
                     {['A vision for its area of responsibility', 'Key challenges and opportunities', 'Innovative programme ideas', 'Priority initiatives and flagship programmes', 'A preliminary implementation plan', 'Possible collaborators and resource persons'].map((li, i) => (
                       <li key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                         <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>•</span>
@@ -135,7 +135,7 @@ export default function ConceptPage() {
                     <span style={{ width: '20px', height: '2px', background: 'var(--primary)' }}></span>
                     Objectives of the Camp
                   </h4>
-                  <ul style={{ paddingLeft: "0", listStyleType: "none", margin: "0", display: "flex", flexDirection: "column", gap: "6px", textAlign: "justify" }}>
+                  <ul style={{ paddingLeft: "0", listStyleType: "none", margin: "0", display: "flex", flexDirection: "column", gap: "6px", textAlign: "left" }}>
                     {['Orient newly elected leaders towards purposeful and visionary leadership.', 'Identify challenges and develop innovative solutions through collective action.', 'Design state, district and specialised flagship programmes and initiatives.', 'Strengthen grassroots leadership and activate district and constituency committees.', 'Create pathways to higher education, competitive examinations and professional excellence.', 'Extend educational empowerment to rural and underserved communities.', 'Develop a clear two-year vision, priorities and action framework for the new leadership.'].map((li, i) => (
                       <li key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                         <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>•</span>
@@ -162,10 +162,7 @@ export default function ConceptPage() {
           
           {showSchedule && (
             <div style={{ marginTop: '32px' }}>
-              <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-                <h3 style={{ color: 'var(--primary)', fontSize: '1.4rem', fontWeight: '800' }}>DISHA 2026</h3>
-                <p style={{ fontWeight: '600', color: 'var(--foreground)', fontSize: '1rem', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto', textJustify: 'inter-word' }}>Leaders' Conclave</p>
-              </div>
+              
 
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <tbody>
@@ -188,7 +185,14 @@ export default function ConceptPage() {
                   <ScheduleItem time="07:30 PM" tag="Session 05" title="ദീപ്തി" desc="ഉസ്താദ് അബ്ദുൽ ഹക്കീം ഫൈസി ആദൃശ്ശേരി" />
                   <ScheduleItem time="09:00 PM" title="ഭക്ഷണം, വിശ്രമം" isBreak />
                   
-                  <tr><td colSpan={2} style={{ padding: '32px 0 16px', fontWeight: '800', color: 'var(--foreground)', fontSize: '1.1rem', textAlign: 'center' }}>Day 2 (13 Sep 2026)</td></tr>
+                  <tr>
+    <td colSpan={2} style={{ padding: '32px 0 24px 0' }}>
+      <div style={{ background: 'var(--primary)', color: 'white', padding: '12px 24px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+        <span style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Day 2</span>
+        <span style={{ fontWeight: '300', fontSize: '0.95rem', opacity: 0.9 }}>- 13 Sep 2026</span>
+      </div>
+    </td>
+  </tr>
                   
                   <ScheduleItem time="05:00 AM" title="പ്രാർത്ഥന" isBreak />
                   <ScheduleItem time="06:00 AM" title="ദൃശ്യം" />
