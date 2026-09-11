@@ -49,10 +49,10 @@ export default function ConceptPage() {
           {showNote && (
             <div style={{ marginTop: '32px', fontSize: '0.95rem', lineHeight: '1.7', color: 'var(--secondary-text)' }}>
               
-              <div style={{ textAlign: 'center', marginBottom: '40px', paddingBottom: '32px', borderBottom: '1px solid #f1f5f9' }}>
+              <div style={{ textAlign: 'center', marginBottom: '16px' }}>
                 <h3 style={{ color: 'var(--primary)', marginBottom: '8px', fontSize: '1.5rem', fontWeight: '800', lineHeight: '1.2' }}>DISHA 2026<br/>WAFY LEADERS MEET</h3>
                 <p style={{ fontWeight: '500', color: 'var(--foreground)', fontSize: '0.9rem', marginBottom: '12px', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto', textJustify: 'inter-word' }}></p>
-                <div style={{ display: 'inline-block', background: '#f8fafc', padding: '8px 16px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: '600', color: '#475569', border: '1px solid #e2e8f0' }}>
+                <div style={{ display: 'inline-block', fontSize: '0.85rem', fontWeight: '600', color: '#475569' }}>
                   12 & 13 September 2026 <br/> Neebar Gate Natural Resort, Kakkadampoyil
                 </div>
               </div>
