@@ -173,8 +173,8 @@ export default function Scanner() {
           <div style={{ lineHeight: '2' }}>
             <p><strong>Name:</strong> {userData.name}</p>
             <p><strong>Phone:</strong> {userData.phone}</p>
-            <p><strong>School:</strong> {userData.school}</p>
-            <p><strong>Designation:</strong> {userData.position}</p>
+            <p><strong>District:</strong> {userData.district}</p>
+            <p><strong>Designation:</strong> {userData.designation}</p>
             <p><strong>Reg No:</strong> {userData.regNumber}</p>
             <p style={{ marginTop: '8px' }}>
               <strong>Status:</strong> 
