@@ -143,7 +143,7 @@ export default function Ticket() {
             <div style={{ position: 'absolute', top: '20px', left: '20px', width: '65px', height: '65px', filter: 'brightness(0) invert(1)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent' }}>
               <img src="/alum.png" alt="Alumni Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
             </div>
-            <div style={{ position: 'absolute', top: '16px', right: '20px', width: '80px', height: '80px', filter: 'brightness(0) invert(1)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent' }}>
+            <div style={{ position: 'absolute', top: '6px', right: '16px', width: '100px', height: '100px', filter: 'brightness(0) invert(1)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent' }}>
               <img src="/disha.png" alt="Disha Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
             </div>
 
@@ -173,7 +173,7 @@ export default function Ticket() {
           </div>
 
           {/* Bottom White Part */}
-          <div style={{ background: 'white', padding: '16px 20px 16px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ background: 'white', padding: '36px 20px 16px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <QRCodeSVG value={registration.regNumber} size={150} level="M" />
             <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}>
               <img src="/logo.png" alt="Logo" style={{ maxWidth: '210px', height: 'auto', objectFit: 'contain' }} />
