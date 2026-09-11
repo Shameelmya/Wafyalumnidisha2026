@@ -6,7 +6,7 @@ import { db, auth } from '@/lib/firebase';
 import { collection, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
 import * as XLSX from 'xlsx';
-import { schools } from '@/lib/schools';
+import { districts } from '@/lib/districts';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -31,8 +31,8 @@ export default function AdminDashboard() {
   const [showSort, setShowSort] = useState(false);
   const [showCaution, setShowCaution] = useState(false);
   const [sortBy, setSortBy] = useState('timeDesc');
-  const [filterSchool, setFilterSchool] = useState('');
-  const [filterPosition, setFilterPosition] = useState('');
+  const [filterDistrict, setFilterDistrict] = useState('');
+  const [filterDesignation, setFilterDesignation] = useState('');
   const [filterAttendance, setFilterAttendance] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -111,8 +111,8 @@ export default function AdminDashboard() {
       "Name": toTitleCase(r.name),
       "Phone Number": r.phone,
       "WhatsApp": r.whatsapp || r.phone,
-      "School": r.school,
-      "Designation": r.position,
+      "District": r.district,
+      "Designation": r.designation,
       "Status": r.status || "Pending",
       "Registration Date": r.timestamp ? new Date(r.timestamp).toLocaleString() : ""
     }));
@@ -120,7 +120,7 @@ export default function AdminDashboard() {
     const worksheet = XLSX.utils.json_to_sheet(formattedData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Registrations");
-    XLSX.writeFile(workbook, "MLA_Teachers_Day_Registrations.xlsx");
+    XLSX.writeFile(workbook, "Wafy_Leaders_Conclave_Registrations.xlsx");
   };
 
   const markAttendance = async (id: string) => {
@@ -207,24 +207,35 @@ export default function AdminDashboard() {
 
   const attendedCount = registrations.filter(r => r.status === 'Attended').length;
 
-  const uniqueSchools = Array.from(new Set(registrations.map(r => r.school))).filter(Boolean);
-  const uniquePositions = Array.from(new Set(registrations.map(r => r.position))).filter(Boolean);
-  const unregisteredSchools = schools.filter(s => !uniqueSchools.includes(s));
+  const uniqueDistricts = Array.from(new Set(registrations.map(r => r.district))).filter(Boolean);
+  const uniqueDesignations = Array.from(new Set(registrations.map(r => r.designation))).filter(Boolean);
+  const unregisteredDistricts = districts.filter(s => !uniqueDistricts.includes(s));
 
-  const schoolCounts = registrations.reduce((acc: any, r: any) => {
-    if (r.school) {
-      acc[r.school] = (acc[r.school] || 0) + 1;
+  const districtCounts = registrations.reduce((acc: any, r: any) => {
+    if (r.district) {
+      acc[r.district] = (acc[r.district] || 0) + 1;
     }
     return acc;
   }, {});
 
-  const registeredSchoolsWithCounts = Object.keys(schoolCounts)
-    .map(school => ({ school, count: schoolCounts[school] }))
+  const registeredDistrictsWithCounts = Object.keys(districtCounts)
+    .map(district => ({ district, count: districtCounts[district] }))
+    .sort((a, b) => b.count - a.count);
+
+  const designationCounts = registrations.reduce((acc: any, r: any) => {
+    if (r.designation) {
+      acc[r.designation] = (acc[r.designation] || 0) + 1;
+    }
+    return acc;
+  }, {});
+
+  const designationStats = Object.keys(designationCounts)
+    .map(designation => ({ designation, count: designationCounts[designation] }))
     .sort((a, b) => b.count - a.count);
 
   const filteredRegistrations = registrations.filter(r => {
-    if (filterSchool && r.school !== filterSchool) return false;
-    if (filterPosition && r.position !== filterPosition) return false;
+    if (filterDistrict && r.district !== filterDistrict) return false;
+    if (filterDesignation && r.designation !== filterDesignation) return false;
     if (filterAttendance) {
       const status = r.status || 'Pending';
       if (status !== filterAttendance) return false;
@@ -232,7 +243,7 @@ export default function AdminDashboard() {
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       if (!r.name?.toLowerCase().includes(term) &&
-          !r.school?.toLowerCase().includes(term) &&
+          !r.district?.toLowerCase().includes(term) &&
           !r.regNumber?.toLowerCase().includes(term) &&
           !r.phone?.toLowerCase().includes(term)) {
         return false;
@@ -252,34 +263,34 @@ export default function AdminDashboard() {
     if (sortBy === 'timeAsc') return getTime(a) - getTime(b);
     if (sortBy === 'nameAsc') return (a.name || '').localeCompare(b.name || '');
     if (sortBy === 'nameDesc') return (b.name || '').localeCompare(a.name || '');
-    if (sortBy === 'schoolAsc') return (a.school || '').localeCompare(b.school || '');
-    if (sortBy === 'schoolDesc') return (b.school || '').localeCompare(a.school || '');
+    if (sortBy === 'districtAsc') return (a.district || '').localeCompare(b.district || '');
+    if (sortBy === 'districtDesc') return (b.district || '').localeCompare(a.district || '');
     return 0;
   });
 
-  const exportSchoolStatsToPDF = () => {
+  const exportDistrictStatsToPDF = () => {
     const doc = new jsPDF();
     
     doc.setFontSize(18);
-    doc.text("School Registration Statistics", 14, 22);
+    doc.text("District Registration Statistics", 14, 22);
     
     doc.setFontSize(12);
     doc.text(`Total Registrations: ${registrations.length}`, 14, 32);
     doc.text(`Total Attended: ${attendedCount}`, 14, 40);
 
-    // Registered Schools Table
+    // Registered Districts Table
     doc.setFontSize(14);
-    doc.text(`Registered Schools (${registeredSchoolsWithCounts.length})`, 14, 52);
+    doc.text(`Registered Districts (${registeredDistrictsWithCounts.length})`, 14, 52);
     
-    const registeredData = registeredSchoolsWithCounts.map((s, index) => [
+    const registeredData = registeredDistrictsWithCounts.map((s, index) => [
       index + 1,
-      s.school,
+      s.district,
       s.count
     ]);
 
     autoTable(doc, {
       startY: 56,
-      head: [['#', 'School Name', 'Registrations']],
+      head: [['#', 'District Name', 'Registrations']],
       body: registeredData,
       theme: 'grid',
       headStyles: { fillColor: [41, 128, 185] }
@@ -287,51 +298,51 @@ export default function AdminDashboard() {
 
     let finalY = (doc as any).lastAutoTable.finalY || 56;
     
-    // Unregistered Schools Table
+    // Unregistered Districts Table
     doc.setFontSize(14);
-    doc.text(`Unregistered Schools (${unregisteredSchools.length})`, 14, finalY + 14);
+    doc.text(`Unregistered Districts (${unregisteredDistricts.length})`, 14, finalY + 14);
     
-    const unregisteredData = unregisteredSchools.map((s, index) => [
+    const unregisteredData = unregisteredDistricts.map((s, index) => [
       index + 1,
       s
     ]);
 
     autoTable(doc, {
       startY: finalY + 18,
-      head: [['#', 'School Name']],
+      head: [['#', 'District Name']],
       body: unregisteredData,
       theme: 'grid',
       headStyles: { fillColor: [231, 76, 60] }
     });
 
-    doc.save("School_Statistics_Report.pdf");
+    doc.save("District_Statistics_Report.pdf");
   };
 
-  const exportSchoolStatsToExcel = () => {
+  const exportDistrictStatsToExcel = () => {
     const workbook = XLSX.utils.book_new();
 
-    // Registered Schools Sheet
-    const registeredData = registeredSchoolsWithCounts.map((s, index) => ({
+    // Registered Districts Sheet
+    const registeredData = registeredDistrictsWithCounts.map((s, index) => ({
       "Sl No": index + 1,
-      "School Name": s.school,
+      "District Name": s.district,
       "Registrations": s.count
     }));
     const registeredSheet = XLSX.utils.json_to_sheet(registeredData);
-    XLSX.utils.book_append_sheet(workbook, registeredSheet, "Registered Schools");
+    XLSX.utils.book_append_sheet(workbook, registeredSheet, "Registered Districts");
 
-    // Unregistered Schools Sheet
-    const unregisteredData = unregisteredSchools.map((s, index) => ({
+    // Unregistered Districts Sheet
+    const unregisteredData = unregisteredDistricts.map((s, index) => ({
       "Sl No": index + 1,
-      "School Name": s
+      "District Name": s
     }));
     const unregisteredSheet = XLSX.utils.json_to_sheet(unregisteredData);
-    XLSX.utils.book_append_sheet(workbook, unregisteredSheet, "Unregistered Schools");
+    XLSX.utils.book_append_sheet(workbook, unregisteredSheet, "Unregistered Districts");
 
-    XLSX.writeFile(workbook, "School_Statistics_Report.xlsx");
+    XLSX.writeFile(workbook, "District_Statistics_Report.xlsx");
   };
 
   return (
-    <div className="admin-container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '80px', position: 'relative' }}>
+    <div className="admin-container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '80px', designation: 'relative' }}>
       
       {/* HEADER WITH ICON BUTTONS */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
@@ -423,9 +434,9 @@ export default function AdminDashboard() {
               border: '1px solid #e2e8f0', cursor: 'pointer',
               boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
             }}
-            title="Caution (Unregistered Schools)"
+            title="Detailed Statistics"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
           </button>
         </div>
         <button onClick={exportToExcel} style={{ background: 'white', color: 'var(--primary)', border: '1px solid var(--primary)', padding: '6px 12px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: '600', cursor: 'pointer' }}>
@@ -437,17 +448,17 @@ export default function AdminDashboard() {
       {showFilter && (
         <div className="glass" style={{ padding: '20px', borderRadius: 'var(--radius-md)', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--secondary-text)', marginBottom: '8px' }}>Filter by School</label>
-            <select className="input-field" value={filterSchool} onChange={e => setFilterSchool(e.target.value)} style={{ padding: '12px' }}>
-              <option value="">All Schools</option>
-              {uniqueSchools.map((s: any) => <option key={s} value={s}>{s}</option>)}
+            <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--secondary-text)', marginBottom: '8px' }}>Filter by District</label>
+            <select className="input-field" value={filterDistrict} onChange={e => setFilterDistrict(e.target.value)} style={{ padding: '12px' }}>
+              <option value="">All Districts</option>
+              {uniqueDistricts.map((s: any) => <option key={s} value={s}>{s}</option>)}
             </select>
           </div>
           <div>
             <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--secondary-text)', marginBottom: '8px' }}>Filter by Designation</label>
-            <select className="input-field" value={filterPosition} onChange={e => setFilterPosition(e.target.value)} style={{ padding: '12px' }}>
+            <select className="input-field" value={filterDesignation} onChange={e => setFilterDesignation(e.target.value)} style={{ padding: '12px' }}>
               <option value="">All Designations</option>
-              {uniquePositions.map((p: any) => <option key={p} value={p}>{p}</option>)}
+              {uniqueDesignations.map((p: any) => <option key={p} value={p}>{p}</option>)}
             </select>
           </div>
           <div>
@@ -458,8 +469,8 @@ export default function AdminDashboard() {
               <option value="Pending">Pending</option>
             </select>
           </div>
-          {(filterSchool || filterPosition || filterAttendance) && (
-            <button onClick={() => { setFilterSchool(''); setFilterPosition(''); setFilterAttendance(''); }} style={{ background: 'transparent', border: 'none', color: 'var(--danger)', fontSize: '0.9rem', cursor: 'pointer', textAlign: 'right', fontWeight: '600', marginTop: '4px' }}>
+          {(filterDistrict || filterDesignation || filterAttendance) && (
+            <button onClick={() => { setFilterDistrict(''); setFilterDesignation(''); setFilterAttendance(''); }} style={{ background: 'transparent', border: 'none', color: 'var(--danger)', fontSize: '0.9rem', cursor: 'pointer', textAlign: 'right', fontWeight: '600', marginTop: '4px' }}>
               Clear Filters
             </button>
           )}
@@ -476,8 +487,8 @@ export default function AdminDashboard() {
               <option value="timeAsc">Oldest First (Time)</option>
               <option value="nameAsc">Name (A-Z)</option>
               <option value="nameDesc">Name (Z-A)</option>
-              <option value="schoolAsc">School (A-Z)</option>
-              <option value="schoolDesc">School (Z-A)</option>
+              <option value="districtAsc">District (A-Z)</option>
+              <option value="districtDesc">District (Z-A)</option>
             </select>
           </div>
         </div>
@@ -488,12 +499,12 @@ export default function AdminDashboard() {
         <div className="glass animate-fade-in" style={{ padding: '20px', borderRadius: 'var(--radius-md)', marginBottom: '16px', border: '1px solid var(--primary)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <h3 style={{ color: 'var(--primary)', margin: 0, fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-              School Statistics
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+              Detailed Statistics
             </h3>
             <div style={{ display: 'flex', gap: '8px' }}>
               <button 
-                onClick={exportSchoolStatsToExcel} 
+                onClick={exportDistrictStatsToExcel} 
                 style={{ 
                   background: 'white', 
                   color: '#059669', 
@@ -512,7 +523,7 @@ export default function AdminDashboard() {
                 Export Excel
               </button>
               <button 
-                onClick={exportSchoolStatsToPDF} 
+                onClick={exportDistrictStatsToPDF} 
                 style={{ 
                   background: 'var(--primary)', 
                   color: 'white', 
@@ -534,17 +545,17 @@ export default function AdminDashboard() {
           </div>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            {/* Registered Schools */}
+            {/* Registered Districts */}
             <div>
               <div style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--success)', marginBottom: '8px' }}>
-                Registered Schools ({registeredSchoolsWithCounts.length})
+                Registered Districts ({registeredDistrictsWithCounts.length})
               </div>
               <div style={{ maxHeight: '200px', overflowY: 'auto', background: 'white', borderRadius: '8px', padding: '12px', border: '1px solid #e2e8f0' }}>
-                {registeredSchoolsWithCounts.length > 0 ? (
+                {registeredDistrictsWithCounts.length > 0 ? (
                   <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {registeredSchoolsWithCounts.map(s => (
-                      <li key={s.school} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#334155', paddingBottom: '8px', borderBottom: '1px solid #f1f5f9' }}>
-                        <span>{s.school}</span>
+                    {registeredDistrictsWithCounts.map(s => (
+                      <li key={s.district} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#334155', paddingBottom: '8px', borderBottom: '1px solid #f1f5f9' }}>
+                        <span>{s.district}</span>
                         <span style={{ fontWeight: '600', color: 'var(--primary)', background: 'rgba(0,198,255,0.1)', padding: '2px 8px', borderRadius: '12px', fontSize: '0.8rem' }}>{s.count}</span>
                       </li>
                     ))}
@@ -555,23 +566,46 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            {/* Unregistered Schools */}
+            {/* Unregistered Districts */}
             <div>
               <div style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--danger)', marginBottom: '8px' }}>
-                Unregistered Schools ({unregisteredSchools.length})
+                Unregistered Districts ({unregisteredDistricts.length})
               </div>
               <div style={{ maxHeight: '200px', overflowY: 'auto', background: 'white', borderRadius: '8px', padding: '12px', border: '1px solid #e2e8f0' }}>
-                {unregisteredSchools.length > 0 ? (
+                {unregisteredDistricts.length > 0 ? (
                   <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {unregisteredSchools.map(s => (
+                    {unregisteredDistricts.map(s => (
                       <li key={s} style={{ fontSize: '0.9rem', color: '#334155', paddingBottom: '8px', borderBottom: '1px solid #f1f5f9' }}>{s}</li>
                     ))}
                   </ul>
                 ) : (
-                  <div style={{ fontSize: '0.9rem', color: 'var(--success)', textAlign: 'center' }}>All schools have registered!</div>
+                  <div style={{ fontSize: '0.9rem', color: 'var(--success)', textAlign: 'center' }}>All districts have registered!</div>
                 )}
               </div>
             </div>
+            </div>
+
+            {/* Designation Stats */}
+            <div>
+              <div style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--primary-alt)', marginBottom: '8px' }}>
+                Designation Breakdown ({designationStats.length})
+              </div>
+              <div style={{ maxHeight: '200px', overflowY: 'auto', background: 'white', borderRadius: '8px', padding: '12px', border: '1px solid #e2e8f0' }}>
+                {designationStats.length > 0 ? (
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {designationStats.map(d => (
+                      <li key={d.designation} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#334155', paddingBottom: '8px', borderBottom: '1px solid #f1f5f9' }}>
+                        <span>{d.designation}</span>
+                        <span style={{ fontWeight: '600', color: 'var(--primary)', background: 'rgba(0,198,255,0.1)', padding: '2px 8px', borderRadius: '12px', fontSize: '0.8rem' }}>{d.count}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div style={{ fontSize: '0.9rem', color: 'var(--secondary-text)', textAlign: 'center' }}>No registrations yet.</div>
+                )}
+              </div>
+            </div>
+
           </div>
         </div>
       )}
@@ -586,7 +620,7 @@ export default function AdminDashboard() {
           className="input-field"
           style={{ width: '100%', padding: '14px', borderRadius: '12px' }}
         />
-        <div style={{ fontSize: '0.7rem', color: 'var(--secondary-text)', marginTop: '8px' }}>Search by Name, Phone, School, or Reg No</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--secondary-text)', marginTop: '8px' }}>Search by Name, Phone, District, or Reg No</div>
       </div>
 
       {loading ? (
@@ -599,7 +633,7 @@ export default function AdminDashboard() {
                 <th style={{ padding: '16px', textAlign: 'left', color: 'var(--secondary-text)' }}>Reg No</th>
                 <th style={{ padding: '16px', textAlign: 'left', color: 'var(--secondary-text)' }}>Name</th>
                 <th style={{ padding: '16px', textAlign: 'left', color: 'var(--secondary-text)' }}>Phone</th>
-                <th style={{ padding: '16px', textAlign: 'left', color: 'var(--secondary-text)' }}>School</th>
+                <th style={{ padding: '16px', textAlign: 'left', color: 'var(--secondary-text)' }}>District</th>
                 <th style={{ padding: '16px', textAlign: 'center', color: 'var(--secondary-text)' }}>Status</th>
                 <th style={{ padding: '16px', textAlign: 'center', color: 'var(--secondary-text)' }}>Actions</th>
               </tr>
@@ -610,14 +644,14 @@ export default function AdminDashboard() {
                   <td style={{ padding: '16px', fontWeight: '600' }}>{r.regNumber}</td>
                   <td style={{ padding: '16px' }}>
                     {toTitleCase(r.name)}<br/>
-                    <span style={{ fontSize: '0.8rem', color: 'var(--secondary-text)' }}>{r.position}</span>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--secondary-text)' }}>{r.designation}</span>
                   </td>
                   <td style={{ padding: '16px' }}>
                     <a href={`tel:${r.phone}`} style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: '500' }}>
                       {r.phone}
                     </a>
                   </td>
-                  <td style={{ padding: '16px', fontSize: '0.9rem' }}>{r.school}</td>
+                  <td style={{ padding: '16px', fontSize: '0.9rem' }}>{r.district}</td>
                   <td style={{ padding: '16px', textAlign: 'center' }}>
                     <span style={{ 
                       padding: '4px 8px', 
@@ -680,7 +714,7 @@ export default function AdminDashboard() {
 
       {/* DELETE CONFIRMATION MODAL */}
       {deleteModal.isOpen && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+        <div style={{ designation: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <div className="glass animate-fade-in" style={{ background: 'white', padding: '32px', borderRadius: '24px', width: '100%', maxWidth: '400px', textAlign: 'center', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}>
             <h3 style={{ color: 'var(--danger)', marginBottom: '16px', fontSize: '1.4rem' }}>Confirm Deletion</h3>
             <p style={{ color: 'var(--secondary-text)', marginBottom: '32px', lineHeight: '1.5' }}>
@@ -698,7 +732,7 @@ export default function AdminDashboard() {
 
       {/* EDIT MODAL */}
       {editModal.isOpen && editModal.data && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+        <div style={{ designation: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <div className="glass animate-fade-in" style={{ background: 'white', padding: '32px', borderRadius: '24px', width: '100%', maxWidth: '400px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}>
             <h3 style={{ marginBottom: '24px', fontSize: '1.4rem', color: 'var(--primary)' }}>Edit Registration</h3>
             <form onSubmit={saveEdit} style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'left' }}>
@@ -715,12 +749,12 @@ export default function AdminDashboard() {
                 <input type="tel" className="input-field" value={editModal.data.whatsapp} onChange={e => setEditModal({ ...editModal, data: { ...editModal.data, whatsapp: e.target.value.replace(/[^0-9]/g, '') } })} required pattern="[0-9]*" inputMode="numeric" />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '0.8rem', marginBottom: '6px', fontWeight: '500' }}>School</label>
-                <input type="text" className="input-field" value={editModal.data.school} onChange={e => setEditModal({ ...editModal, data: { ...editModal.data, school: e.target.value } })} required />
+                <label style={{ display: 'block', fontSize: '0.8rem', marginBottom: '6px', fontWeight: '500' }}>District</label>
+                <input type="text" className="input-field" value={editModal.data.district} onChange={e => setEditModal({ ...editModal, data: { ...editModal.data, district: e.target.value } })} required />
               </div>
               <div>
                 <label style={{ display: 'block', fontSize: '0.8rem', marginBottom: '6px', fontWeight: '500' }}>Designation</label>
-                <input type="text" className="input-field" value={editModal.data.position} onChange={e => setEditModal({ ...editModal, data: { ...editModal.data, position: e.target.value } })} required />
+                <input type="text" className="input-field" value={editModal.data.designation} onChange={e => setEditModal({ ...editModal, data: { ...editModal.data, designation: e.target.value } })} required />
               </div>
               
               <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>

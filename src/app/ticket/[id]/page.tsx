@@ -12,6 +12,8 @@ function toTitleCase(str: string) {
   return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 
+const dummyFace = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23cbd5e1"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
+
 export default function Ticket() {
   const params = useParams();
   const phone = params.id as string;
@@ -19,6 +21,7 @@ export default function Ticket() {
   const ticketRef = useRef<HTMLDivElement>(null);
 
   const [registration, setRegistration] = useState<any>(null);
+  const [photo, setPhoto] = useState<string>(dummyFace);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -30,6 +33,11 @@ export default function Ticket() {
 
         if (docSnap.exists()) {
           setRegistration(docSnap.data());
+          // Fetch photo from session storage
+          const savedPhoto = sessionStorage.getItem(`photo_${phone}`);
+          if (savedPhoto) {
+            setPhoto(savedPhoto);
+          }
         } else {
           setError('Entry pass not found.');
         }
@@ -44,10 +52,9 @@ export default function Ticket() {
 
   const handleDownload = async () => {
     if (ticketRef.current) {
-      // Use scale 4 for high quality and solid background to prevent WhatsApp from making transparent corners black
       const canvas = await html2canvas(ticketRef.current, { 
         scale: 4, 
-        backgroundColor: '#f0fdf4',
+        backgroundColor: '#fafafa',
         onclone: (clonedDoc) => {
           const el = clonedDoc.getElementById('export-ticket');
           if (el) {
@@ -68,7 +75,7 @@ export default function Ticket() {
     if (ticketRef.current && navigator.share) {
       const canvas = await html2canvas(ticketRef.current, { 
         scale: 4, 
-        backgroundColor: '#f0fdf4',
+        backgroundColor: '#fafafa',
         onclone: (clonedDoc) => {
           const el = clonedDoc.getElementById('export-ticket');
           if (el) {
@@ -83,7 +90,7 @@ export default function Ticket() {
           try {
             await navigator.share({
               title: 'Registration Successful',
-              text: `Registration Successful!\nName: ${registration.name}\nReg No: ${registration.regNumber}\n\nHere is your entry pass for the Teachers Day Programme!`,
+              text: `Registration Successful!\nName: ${registration.name}\nReg No: ${registration.regNumber}\n\nHere is your entry pass for the Leaders Conclave!`,
               files: [file]
             });
           } catch (err) {
@@ -117,8 +124,7 @@ export default function Ticket() {
           background: 'white', 
           borderRadius: '20px',
           overflow: 'hidden',
-          /* Ticket cutout mask for modern professional look */
-          WebkitMaskImage: 'radial-gradient(circle at 0px 145px, transparent 16px, black 17px), radial-gradient(circle at 100% 145px, transparent 16px, black 17px)',
+          WebkitMaskImage: 'radial-gradient(circle at 0px 175px, transparent 16px, black 17px), radial-gradient(circle at 100% 175px, transparent 16px, black 17px)',
           WebkitMaskSize: '51% 100%',
           WebkitMaskPosition: 'left, right',
           WebkitMaskRepeat: 'no-repeat',
@@ -134,21 +140,24 @@ export default function Ticket() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            height: '145px',
+            height: '175px',
             justifyContent: 'center',
             textAlign: 'center'
           }}>
-            <div style={{ fontSize: '0.75rem', letterSpacing: '0.05em', opacity: 0.9, marginBottom: '8px', textTransform: 'uppercase', fontWeight: '600' }}>
+            <div style={{ width: '60px', height: '60px', borderRadius: '50%', overflow: 'hidden', marginBottom: '12px', background: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+               <img src={photo} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+            <div style={{ fontSize: '0.75rem', letterSpacing: '0.05em', opacity: 0.9, marginBottom: '4px', textTransform: 'uppercase', fontWeight: '600' }}>
               Reg No: {registration.regNumber}
             </div>
-            <div style={{ fontSize: '1.6rem', fontWeight: '700', marginBottom: '4px', lineHeight: 1.1 }}>
+            <div style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '2px', lineHeight: 1.1 }}>
               {toTitleCase(registration.name)}
             </div>
-            <div style={{ fontSize: '0.9rem', fontWeight: '500', opacity: 0.95, marginBottom: '2px' }}>
-              {registration.position}
+            <div style={{ fontSize: '0.85rem', fontWeight: '500', opacity: 0.95, marginBottom: '2px' }}>
+              {registration.designation}
             </div>
-            <div style={{ fontSize: '0.8rem', opacity: 0.8, lineHeight: 1.2 }}>
-              {registration.school}
+            <div style={{ fontSize: '0.75rem', opacity: 0.8, lineHeight: 1.2 }}>
+              {registration.district}
             </div>
           </div>
 
@@ -163,11 +172,11 @@ export default function Ticket() {
             flexDirection: 'column', 
             alignItems: 'center' 
           }}>
-            <QRCodeSVG value={registration.regNumber} size={160} level="M" />
+            <QRCodeSVG value={registration.regNumber} size={150} level="M" />
             <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginTop: '12px', marginBottom: '24px' }}>Scan for entry</div>
 
             <div style={{ width: '95%', height: '70px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <img src="/logo.png" alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+              <img src="/poster.jpeg" alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
             </div>
           </div>
 

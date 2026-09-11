@@ -1,277 +1,205 @@
 "use client";
 
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { schools } from '@/lib/schools';
-import { db } from '@/lib/firebase';
-import { doc, getDoc, setDoc, serverTimestamp, runTransaction, collection, getDocs } from 'firebase/firestore';
 
-function normalizePhone(phone: string) {
-  let digits = phone.replace(/[^0-9]/g, '');
-  if (digits.length > 10) {
-    if (digits.startsWith('91') && digits.length === 12) {
-      digits = digits.substring(2);
-    } else if (digits.startsWith('091') && digits.length === 13) {
-      digits = digits.substring(3);
-    } else if (digits.startsWith('0') && digits.length === 11) {
-      digits = digits.substring(1);
-    }
-  }
-  return digits;
+function ScheduleItem({ time, title, desc, tag, isBreak }: { time: string, title: string, desc?: string, tag?: string, isBreak?: boolean }) {
+  return (
+    <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
+      <td style={{ padding: '16px 12px', verticalAlign: 'top', width: '100px', fontWeight: '700', color: 'var(--primary)', fontSize: '0.9rem' }}>
+        {time}
+      </td>
+      <td style={{ padding: '16px 12px', verticalAlign: 'top', position: 'relative' }}>
+        <div style={{ position: 'absolute', left: 0, top: '24px', bottom: '24px', width: '2px', background: isBreak ? '#e2e8f0' : 'var(--primary)', opacity: isBreak ? 0.5 : 0.2 }}></div>
+        <div style={{ paddingLeft: '16px' }}>
+          {tag && <div style={{ fontSize: '0.75rem', fontWeight: '800', color: 'var(--primary)', letterSpacing: '0.05em', marginBottom: '4px', textTransform: 'uppercase' }}>{tag}</div>}
+          <div style={{ fontSize: isBreak ? '0.9rem' : '1.05rem', fontWeight: isBreak ? '500' : '700', color: isBreak ? '#94a3b8' : 'var(--foreground)', fontFamily: '"Noto Serif Malayalam", serif', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+            {title} {desc && <span style={{ fontSize: '0.9rem', color: '#64748b', fontWeight: '500' }}>{desc}</span>}
+          </div>
+        </div>
+      </td>
+    </tr>
+  );
 }
 
-function toTitleCase(str: string) {
-  if (!str) return '';
-  return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-}
-
-export default function Register() {
+export default function ConceptPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    whatsapp: '',
-    school: '',
-    position: ''
-  });
-  const [showOtherDesignation, setShowOtherDesignation] = useState(false);
-  const [sameAsPhone, setSameAsPhone] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  
-  // Custom dropdown state
-  const [schoolSearch, setSchoolSearch] = useState('');
-  const [showSchoolDropdown, setShowSchoolDropdown] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Close dropdown when clicking outside
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setShowSchoolDropdown(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSameAsPhone(e.target.checked);
-    if (e.target.checked) {
-      setFormData((prev) => ({ ...prev, whatsapp: prev.phone }));
-    } else {
-      setFormData((prev) => ({ ...prev, whatsapp: '' }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    
-    if (!formData.school || !schools.includes(formData.school)) {
-      setError('Please select a valid school from the list.');
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const normPhone = normalizePhone(formData.phone);
-      if (normPhone.length < 10) {
-        setError('Please enter a valid 10-digit phone number.');
-        setLoading(false);
-        return;
-      }
-
-      // Check all documents for duplicates using the normalized number to handle messy old data
-      const qSnap = await getDocs(collection(db, 'registrations'));
-      let isDuplicate = false;
-      qSnap.forEach(docSnap => {
-        if (normalizePhone(docSnap.id) === normPhone || normalizePhone(docSnap.data().phone || '') === normPhone) {
-          isDuplicate = true;
-        }
-      });
-
-      if (isDuplicate) {
-        setError('Phone number is already registered.');
-        setLoading(false);
-        return;
-      }
-
-      // Use the clean normalized phone as the document ID
-      const docRef = doc(db, 'registrations', normPhone);
-
-      const counterRef = doc(db, 'config', 'counter');
-      const regNumber = await runTransaction(db, async (transaction) => {
-        const counterDoc = await transaction.get(counterRef);
-        let newCount = 1;
-        if (counterDoc.exists()) {
-          newCount = (counterDoc.data().value || 0) + 1;
-        }
-        transaction.set(counterRef, { value: newCount }, { merge: true });
-        return "MPT" + String(newCount).padStart(3, '0');
-      });
-
-      const titleCaseName = toTitleCase(formData.name);
-
-      await setDoc(docRef, {
-        ...formData,
-        name: titleCaseName,
-        phone: normPhone,
-        whatsapp: sameAsPhone ? normPhone : normalizePhone(formData.whatsapp),
-        regNumber,
-        status: 'Pending',
-        createdAt: serverTimestamp()
-      });
-
-      router.push(`/ticket/${normPhone}`);
-
-    } catch (err: any) {
-      console.error(err);
-      setError('An error occurred while submitting. Check Firebase.');
-    }
-    setLoading(false);
-  };
-
-  const filteredSchools = schools.filter(s => s.toLowerCase().includes(schoolSearch.toLowerCase()));
+  const [showNote, setShowNote] = useState(true);
+  const [showSchedule, setShowSchedule] = useState(false);
 
   return (
-    <div className="container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
-      <button onClick={() => router.back()} style={{ background: 'transparent', color: 'var(--primary-alt)', fontWeight: '600', marginBottom: '24px', fontSize: '1rem', padding: '0', border: 'none', cursor: 'pointer' }}>
-        &larr; Back
-      </button>
+    <div className="container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       
-      <h1 style={{ marginBottom: '32px', textAlign: 'center' }}>Registration</h1>
+      <button onClick={() => router.push('/')} style={{ background: 'transparent', color: 'var(--primary-alt)', fontWeight: '600', marginBottom: '24px', fontSize: '1rem', padding: '0', border: 'none', cursor: 'pointer', alignSelf: 'flex-start' }}>
+        &larr; Home
+      </button>
 
-      {error && (
-        <div style={{ backgroundColor: '#fee2e2', color: 'var(--danger)', padding: '16px', borderRadius: '16px', marginBottom: '24px', fontWeight: '500', fontSize: '0.9rem', textAlign: 'center' }}>
-          {error}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '40px' }}>
         
-        <div className="input-wrapper">
-          <label className="input-label">Full name</label>
-          <input required type="text" name="name" value={formData.name} onChange={handleChange} className="input-field" />
-        </div>
-        
-        <div className="input-wrapper">
-          <label className="input-label">Phone Number</label>
-          <input required type="tel" name="phone" value={formData.phone} onChange={(e) => {
-            e.target.value = e.target.value.replace(/[^0-9]/g, '');
-            handleChange(e);
-            if(sameAsPhone) setFormData(prev => ({...prev, whatsapp: e.target.value}));
-          }} className="input-field" pattern="[0-9]*" inputMode="numeric" />
-        </div>
+        {/* Concept Note */}
+        <div style={{ background: 'var(--card-bg)', borderRadius: '16px', padding: '24px 32px', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)', border: '1px solid #f1f5f9' }}>
+          <button 
+            onClick={() => setShowNote(!showNote)} 
+            style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', color: 'var(--foreground)', fontSize: '1.25rem', fontWeight: '700', border: 'none', cursor: 'pointer', padding: 0 }}
+          >
+            What's Disha 2026?
+            <span style={{ fontSize: '1.5rem', fontWeight: '300', color: 'var(--primary)', lineHeight: 1 }}>{showNote ? '-' : '+'}</span>
+          </button>
+          
+          {showNote && (
+            <div style={{ marginTop: '32px', fontSize: '0.95rem', lineHeight: '1.7', color: 'var(--secondary-text)' }}>
+              
+              <div style={{ textAlign: 'center', marginBottom: '40px', paddingBottom: '32px', borderBottom: '1px solid #f1f5f9' }}>
+                <h3 style={{ color: 'var(--primary)', marginBottom: '8px', fontSize: '1.5rem', fontWeight: '800', lineHeight: '1.2' }}>DISHA 2026<br/>WAFY LEADERS MEET</h3>
+                <p style={{ fontWeight: '500', color: 'var(--foreground)', fontSize: '0.9rem', marginBottom: '12px' }}>Orientation, Vision Building & Programme Design Camp</p>
+                <div style={{ display: 'inline-block', background: '#f8fafc', padding: '8px 16px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: '600', color: '#475569', border: '1px solid #e2e8f0' }}>
+                  12 & 13 September 2026 | Neebar Gate Natural Resort, Kakkadampoyil
+                </div>
+              </div>
 
-        <div className="input-wrapper">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', marginLeft: '12px', marginRight: '12px' }}>
-            <label className="input-label" style={{ margin: 0 }}>WhatsApp Number</label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', fontWeight: '600', color: '#475569', cursor: 'pointer' }}>
-              <input type="checkbox" checked={sameAsPhone} onChange={handleCheckbox} style={{ width: '16px', height: '16px', accentColor: 'var(--primary-alt)' }} />
-              Same as phone
-            </label>
-          </div>
-          {!sameAsPhone && (
-            <input required type="tel" name="whatsapp" value={formData.whatsapp} onChange={(e) => {
-              e.target.value = e.target.value.replace(/[^0-9]/g, '');
-              handleChange(e);
-            }} className="input-field" pattern="[0-9]*" inputMode="numeric" />
+              <div style={{ marginBottom: '32px' }}>
+                <p style={{ marginBottom: '16px' }}>Leadership is not merely managing an organisation; it is the ability to visualise possibilities, identify needs, inspire people and transform ideas into meaningful action.</p>
+                <p style={{ marginBottom: '24px' }}>DISHA 2026 is conceived as a two-day orientation and vision-building camp for the newly elected WAFY leaders, marking the beginning of their two-year tenure. The camp aims to inspire leaders to think beyond routine activities and envision innovative initiatives for the educational, intellectual and social empowerment of the WAFY community and society at large.</p>
+                
+                <p style={{ marginBottom: '12px', color: 'var(--foreground)', fontWeight: '700' }}>The Central Question of DISHA</p>
+                <p style={{ marginBottom: '24px', fontWeight: '500', color: '#334155' }}>“What meaningful difference can we create during our two-year tenure?”</p>
+                
+                <p style={{ marginBottom: '16px' }}>Participants will come prepared to think, brainstorm and design. Each committee will examine the needs and opportunities within its area, develop innovative ideas and translate them into programmes that can create sustainable impact.</p>
+              </div>
+
+              <div style={{ marginBottom: '32px' }}>
+                <h4 style={{ color: 'var(--foreground)', fontSize: '1.1rem', fontWeight: '700', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{ width: '20px', height: '2px', background: 'var(--primary)' }}></span>
+                  The DISHA Approach
+                </h4>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px', justifyContent: 'center', alignItems: 'center' }}>
+                   {['Think', 'Brainstorm', 'Design', 'Commit'].map((step, idx) => (
+                     <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ color: 'var(--primary)', fontWeight: '700', fontSize: '0.9rem' }}>{step}</div>
+                        {idx !== 3 && <div style={{ color: '#cbd5e1', fontWeight: '400', fontSize: '0.8rem' }}>→</div>}
+                     </div>
+                   ))}
+                </div>
+                <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                  <p style={{ fontWeight: '600', color: '#64748b', marginBottom: '4px' }}>DISHA seeks to move:</p>
+                  <p style={{ fontWeight: '500', color: 'var(--foreground)' }}>Leadership → Vision → Ideas → Programmes → Impact</p>
+                </div>
+                <p>Thus, the camp will function not merely as an orientation programme, but as a creative laboratory for developing WAFY's future programmes.</p>
+              </div>
+
+              <div style={{ marginBottom: '40px' }}>
+                <h4 style={{ color: 'var(--foreground)', fontSize: '1.1rem', fontWeight: '700', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{ width: '20px', height: '2px', background: 'var(--primary)' }}></span>
+                  Thematic Brainstorming
+                </h4>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
+                  {[
+                    { title: 'State Committee', desc: 'Develop innovative, large-scale flagship programmes for the educational and intellectual empowerment of the Muslim Ummah.' },
+                    { title: 'District Committees', desc: 'Strengthen district and constituency-level activities and transform constituencies into active centres of leadership and social engagement.' },
+                    { title: 'Social Empowerment Mission', desc: 'Design training programmes for human development, leadership, life skills, employability and social responsibility.' },
+                    { title: 'WAY Book', desc: 'Identify and nurture thinkers, writers and intellectual contributors among WAFY graduates.' },
+                    { title: 'WAY Media', desc: 'Develop presenters, communicators and media talents through innovative media and digital platforms.' },
+                    { title: 'Higher Education Council', desc: 'Create pathways for higher education, competitive examinations, high-profile government jobs and professional opportunities.' },
+                    { title: 'National Empowerment Mission', desc: 'Expand and replicate WAFY\'s educational empowerment initiatives for rural and underserved communities across India.' },
+                    { title: 'Debate Council', desc: 'Function as an academic think tank, organising consultations, debates and intellectual forums on contemporary issues and generating informed perspectives and recommendations.' }
+                  ].map((item, idx) => (
+                    <div key={idx} style={{ background: '#ffffff', border: '1px solid #f1f5f9', borderRadius: '12px', padding: '20px' }}>
+                      <div style={{ color: 'var(--primary)', fontWeight: '700', fontSize: '0.9rem', marginBottom: '8px' }}>{item.title}</div>
+                      <div style={{ color: '#64748b', fontSize: '0.85rem', lineHeight: '1.6' }}>{item.desc}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '32px' }}>
+                <div>
+                  <h4 style={{ color: 'var(--foreground)', fontSize: '1.1rem', fontWeight: '700', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span style={{ width: '20px', height: '2px', background: 'var(--primary)' }}></span>
+                    Expected Outcome
+                  </h4>
+                  <p style={{ marginBottom: '16px', fontSize: '0.9rem' }}>Every committee should ideally leave the camp with a clear two-year action direction:</p>
+                  <ul style={{ paddingLeft: '0', listStyleType: 'none', margin: '0', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {['A vision for its area of responsibility', 'Key challenges and opportunities', 'Innovative programme ideas', 'Priority initiatives and flagship programmes', 'A preliminary implementation plan', 'Possible collaborators and resource persons'].map((li, i) => (
+                      <li key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                        <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>•</span>
+                        <span style={{ fontSize: '0.9rem', color: '#475569', lineHeight: '1.5' }}>{li}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <div>
+                  <h4 style={{ color: 'var(--foreground)', fontSize: '1.1rem', fontWeight: '700', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span style={{ width: '20px', height: '2px', background: 'var(--primary)' }}></span>
+                    Objectives of the Camp
+                  </h4>
+                  <ul style={{ paddingLeft: '0', listStyleType: 'none', margin: '0', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {['Orient newly elected leaders towards purposeful and visionary leadership.', 'Identify challenges and develop innovative solutions through collective action.', 'Design state, district and specialised flagship programmes and initiatives.', 'Strengthen grassroots leadership and activate district and constituency committees.', 'Create pathways to higher education, competitive examinations and professional excellence.', 'Extend educational empowerment to rural and underserved communities.', 'Develop a clear two-year vision, priorities and action framework for the new leadership.'].map((li, i) => (
+                      <li key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                        <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>•</span>
+                        <span style={{ fontSize: '0.9rem', color: '#475569', lineHeight: '1.5' }}>{li}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+            </div>
           )}
         </div>
 
+        {/* Schedule */}
+        <div style={{ background: 'var(--card-bg)', borderRadius: '16px', padding: '24px 32px', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)', border: '1px solid #f1f5f9' }}>
+          <button 
+            onClick={() => setShowSchedule(!showSchedule)} 
+            style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', color: 'var(--foreground)', fontSize: '1.25rem', fontWeight: '700', border: 'none', cursor: 'pointer', padding: 0 }}
+          >
+            Programme Schedule
+            <span style={{ fontSize: '1.5rem', fontWeight: '300', color: 'var(--primary)', lineHeight: 1 }}>{showSchedule ? '-' : '+'}</span>
+          </button>
+          
+          {showSchedule && (
+            <div style={{ marginTop: '32px' }}>
+              <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+                <h3 style={{ color: 'var(--primary)', fontSize: '1.4rem', fontWeight: '800' }}>DISHA 2026</h3>
+                <p style={{ fontWeight: '600', color: 'var(--foreground)', fontSize: '1rem' }}>Leaders' Conclave</p>
+              </div>
 
-
-        <div className="input-wrapper" ref={dropdownRef}>
-          <label className="input-label">School Name</label>
-          <div style={{ position: 'relative' }}>
-            <input 
-              type="text" 
-              value={schoolSearch} 
-              onChange={e => {
-                setSchoolSearch(e.target.value);
-                setFormData(prev => ({ ...prev, school: e.target.value }));
-                setShowSchoolDropdown(true);
-              }}
-              onFocus={() => setShowSchoolDropdown(true)}
-              className="input-field" 
-              placeholder="Search Your School"
-              required
-            />
-            
-            {showSchoolDropdown && (
-              <ul style={{ 
-                position: 'absolute', 
-                top: 'calc(100% + 8px)', 
-                left: 0, 
-                right: 0, 
-                background: 'white', 
-                zIndex: 10, 
-                maxHeight: '220px', 
-                overflowY: 'auto', 
-                borderRadius: '16px', 
-                boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-                padding: '8px 0',
-                listStyle: 'none'
-              }}>
-                {filteredSchools.length > 0 ? (
-                  filteredSchools.map(s => (
-                    <li 
-                      key={s} 
-                      style={{ padding: '12px 20px', cursor: 'pointer', borderBottom: '1px solid #f1f5f9', fontSize: '0.95rem', color: '#334155' }} 
-                      onClick={() => {
-                        setSchoolSearch(s);
-                        setFormData(prev => ({ ...prev, school: s }));
-                        setShowSchoolDropdown(false);
-                      }}
-                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f8fafc')}
-                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-                    >
-                      {s}
-                    </li>
-                  ))
-                ) : (
-                  <li style={{ padding: '12px 20px', color: '#94a3b8', fontSize: '0.95rem' }}>No schools found</li>
-                )}
-              </ul>
-            )}
-          </div>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <tbody>
+                  <ScheduleItem time="01:30 PM" title="റിപ്പോർട്ടിംഗ്" />
+                  <ScheduleItem time="02:00 PM" title="രജിസ്ട്രേഷൻ" />
+                  <ScheduleItem time="02:30 PM" title="പഥം" desc="ഡോ. നൗഫൽ വാഫി മേലാറ്റൂർ (ക്യാമ്പ് ഡയറക്ടർ)" />
+                  <ScheduleItem time="02:45 PM" tag="Session 01" title="ദർശനം" desc="ഡോ. ഇദ് രീസ്" />
+                  <ScheduleItem time="04:00 PM" title="ബ്രേക്ക്‌" isBreak />
+                  <ScheduleItem time="04:15 PM" tag="Session 02" title="സ്പർശം" desc="അബൂബക്കർ ഹുദവി" />
+                  <ScheduleItem time="05:30 PM" title="പ്രാർത്ഥന, ചായ, ഉല്ലാസം" isBreak />
+                  <ScheduleItem time="07:00 PM" tag="Session 03" title="വശ്യം" desc="ഡോ. അബ്ദുൽ ബർറ് വാഫി" />
+                  <ScheduleItem time="07:30 PM" tag="Session 04" title="ദീപ്തി" desc="ഉസ്താദ് അബ്ദുൽ ഹക്കീം ഫൈസി ആദൃശ്ശേരി" />
+                  <ScheduleItem time="09:00 PM" title="ഭക്ഷണം, ഉല്ലാസം, വിശ്രമം" isBreak />
+                  
+                  <tr><td colSpan={2} style={{ padding: '32px 0 16px', fontWeight: '800', color: 'var(--foreground)', fontSize: '1.1rem', textAlign: 'center' }}>Day 2 (13 Sep 2026)</td></tr>
+                  
+                  <ScheduleItem time="05:00 AM" title="പ്രാർത്ഥന" isBreak />
+                  <ScheduleItem time="06:00 AM" title="ദൃശ്യം (Morning Vibe)" />
+                  <ScheduleItem time="08:00 AM" title="പ്രഭാത ഭക്ഷണം" isBreak />
+                  <ScheduleItem time="08:30 AM" tag="Session 06" title="ദിശൻ (ബ്രെയിൻ സ്റ്റോമിംഗ്)" />
+                  <ScheduleItem time="10:00 AM" title="ബ്രേക്ക്" isBreak />
+                  <ScheduleItem time="10:15 AM" tag="Session 07" title="സമന്വയം (ചർച്ച)" />
+                  <ScheduleItem time="11:30 AM" title="സമാപ്തി (ക്ലോസിങ് സെറിമണി)" />
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
+        
+      </div>
 
-        <div className="input-wrapper">
-          <label className="input-label">Designation</label>
-          <select required name="position" value={showOtherDesignation ? 'Other' : formData.position} onChange={(e) => {
-             if (e.target.value === 'Other') {
-               setShowOtherDesignation(true);
-               setFormData({ ...formData, position: '' });
-             } else {
-               setShowOtherDesignation(false);
-               handleChange(e);
-             }
-          }} className="input-field" style={{ appearance: 'none', color: formData.position || showOtherDesignation ? 'var(--foreground)' : '#94a3b8' }}>
-            <option value="" disabled>Select Your Designation</option>
-            <option value="Principal/Head Teacher">Principal/Head Teacher</option>
-            <option value="ICT Coordinator">ICT Coordinator</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
+      <button onClick={() => router.push('/registration-form')} className="btn-primary" style={{ marginBottom: '40px', padding: '20px', fontSize: '1.2rem' }}>
+        Register Now
+      </button>
 
-        {showOtherDesignation && (
-          <div className="input-wrapper">
-            <label className="input-label">Enter Designation</label>
-            <input required type="text" name="position" value={formData.position} onChange={handleChange} className="input-field" placeholder="E.g. Vice Principal" />
-          </div>
-        )}
-
-        <button type="submit" disabled={loading} className="btn-primary" style={{ marginTop: '24px' }}>
-          {loading ? 'Submitting...' : 'Submit'}
-        </button>
-      </form>
     </div>
   );
 }

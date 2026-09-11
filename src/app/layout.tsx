@@ -3,8 +3,8 @@ import './globals.css';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'MLA Teachers Day Registration',
-  description: 'Registration for Teachers Day programme conducted by MLA',
+  title: 'DISHA 2026 - Wafy Leaders Meet',
+  description: 'Registration for DISHA 2026 WAFY Leaders Meet at Neebar Gate Natural Resort, Kakkadampoyil',
 };
 
 export default function RootLayout({
@@ -17,7 +17,7 @@ export default function RootLayout({
       <body>
         <main>{children}</main>
         <footer style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--secondary-text)', fontSize: '14px', lineHeight: '1.6' }}>
-          <p>Copyright © MLA Office Kunnamangalam</p>
+          <p>Copyright © DISHA 2026 Wafy Leaders Meet</p>
           <p style={{ marginTop: '4px', fontSize: '0.9rem' }}>
             Developed by <a href="https://wa.me/917559865389?text=Hi%20Dot%20Projects%2C%20we%20experienced%20your%20registration%20website%20for%20MLA%20office%20Kunnamangalam%20events%2C%20we%20have%20an%20enquiry." target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', fontWeight: '600', textDecoration: 'none' }}>Dot Projects</a>
           </p>

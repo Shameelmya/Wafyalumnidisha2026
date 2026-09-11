@@ -9,8 +9,8 @@ export default function Home() {
   const [isRegOpen, setIsRegOpen] = useState(true);
 
   useEffect(() => {
-    // SEP 5 2026, 8.55 AM target date
-    const targetDate = new Date("2026-09-05T08:55:00").getTime();
+    // SEP 12 2026, 09:00 AM target date
+    const targetDate = new Date("2026-09-12T09:00:00").getTime();
     
     const calculateTime = () => {
       const now = new Date().getTime();
@@ -27,9 +27,7 @@ export default function Home() {
       };
     };
 
-    // Calculate immediately to avoid the 1 second loading delay
     setTimeLeft(calculateTime());
-    
     const interval = setInterval(() => {
       setTimeLeft(calculateTime());
     }, 1000);
@@ -62,9 +60,9 @@ export default function Home() {
           {timeLeft ? (
             <>
               <TimeBox value={timeLeft.d} label="Days" color="linear-gradient(135deg, var(--primary), var(--primary-alt))" />
-              <TimeBox value={timeLeft.h} label="Hrs" color="linear-gradient(135deg, #059669, #34d399)" />
+              <TimeBox value={timeLeft.h} label="Hrs" color="linear-gradient(135deg, #4b5563, #374151)" />
               <TimeBox value={timeLeft.m} label="Min" color="linear-gradient(135deg, var(--primary), var(--primary-alt))" />
-              <TimeBox value={timeLeft.s} label="Sec" color="linear-gradient(135deg, #059669, #34d399)" />
+              <TimeBox value={timeLeft.s} label="Sec" color="linear-gradient(135deg, #4b5563, #374151)" />
             </>
           ) : (
             <div style={{ height: '80px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading timer...</div>
@@ -79,7 +77,7 @@ export default function Home() {
         {/* Register Button */}
         {isRegOpen ? (
           <Link href="/register" className="btn-primary" style={{ padding: '20px', fontSize: '1.1rem' }}>
-            Register Now
+            Registration Portal
           </Link>
         ) : (
           <button className="btn-primary" disabled style={{ padding: '20px', fontSize: '1.1rem' }}>
@@ -91,7 +89,7 @@ export default function Home() {
           <Link href="/get-pass" className="btn-secondary" style={{ flex: 1, padding: '16px 0' }}>
             Get Pass
           </Link>
-          <a href="https://maps.app.goo.gl/aa2GviWm4EKhDqxy7" target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ flex: 1, padding: '16px 0' }}>
+          <a href="https://maps.app.goo.gl/kuQ67dZKdnrNCC6Q6" target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ flex: 1, padding: '16px 0' }}>
             Location
           </a>
         </div>
@@ -109,3 +107,4 @@ function TimeBox({ value, label, color }: { value: number, label: string, color:
     </div>
   );
 }
+
