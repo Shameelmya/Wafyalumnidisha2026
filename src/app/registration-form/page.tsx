@@ -274,7 +274,7 @@ export default function RegistrationForm() {
         &larr; Back
       </button>
       
-      <h1 style={{ marginBottom: '32px', textAlign: 'center' }}>Camp Registration</h1>
+      <h1 style={{ marginBottom: '32px', textAlign: 'center' }}>Conclave Registration</h1>
 
       {error && (
         <div style={{ backgroundColor: '#fee2e2', color: 'var(--danger)', padding: '16px', borderRadius: '16px', marginBottom: '24px', fontWeight: '500', fontSize: '0.9rem', textAlign: 'center' }}>
