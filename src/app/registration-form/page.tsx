@@ -37,9 +37,9 @@ const designationsList = [
 ];
 
 const districtsList = [
-  "Alappuzha", "Ernakulam", "Idukki", "Kannur", "Kasaragod",
-  "Kollam", "Kottayam", "Kozhikode", "Malappuram", "Palakkad",
-  "Pathanamthitta", "Thiruvananthapuram", "Thrissur", "Wayanad", "Other"
+  "Alappuzha", "Ernakulam", "Idukki & Kottayam", "Kannur", "Kasaragod",
+  "Kollam", "Kozhikode", "Malappuram East", "Malappuram West", "Palakkad",
+  "Pathanamthitta", "Thiruvananthapuram", "Thrissur", "Wayanad", "Karnataka", "Other"
 ];
 
 function SearchableDropdown({ options, value, onChange, placeholder }: { options: string[], value: string, onChange: (val: string) => void, placeholder: string }) {
