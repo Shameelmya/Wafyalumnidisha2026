@@ -100,7 +100,7 @@ export default function ConceptPage() {
                     { title: 'District Committees', desc: 'Strengthen district and constituency-level activities and transform constituencies into active centres of leadership and social engagement.' },
                     { title: 'Social Empowerment Mission', desc: 'Design training programmes for human development, leadership, life skills, employability and social responsibility.' },
                     { title: 'WAY Book', desc: 'Identify and nurture thinkers, writers and intellectual contributors among WAFY graduates.' },
-                    { title: 'WAY Media', desc: 'Develop presenters, communicators and media talents through innovative media and digital platforms.' },
+                    { title: 'WAA Media', desc: 'Develop presenters, communicators and media talents through innovative media and digital platforms.' },
                     { title: 'Higher Education Council', desc: 'Create pathways for higher education, competitive examinations, high-profile government jobs and professional opportunities.' },
                     { title: 'National Empowerment Mission', desc: 'Expand and replicate WAFY\'s educational empowerment initiatives for rural and underserved communities across India.' },
                     { title: 'Debate Council', desc: 'Function as an academic think tank, organising consultations, debates and intellectual forums on contemporary issues and generating informed perspectives and recommendations.' }
