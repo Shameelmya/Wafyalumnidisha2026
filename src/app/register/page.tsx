@@ -178,7 +178,7 @@ export default function ConceptPage() {
                   <ScheduleItem time="02:00 PM" title="രജിസ്ട്രേഷൻ" />
                   <ScheduleItem time="02:30 PM" tag="Session 01" title="പഥം" desc="ഡോ. നൗഫൽ വാഫി മേലാറ്റൂർ (ക്യാമ്പ് ഡയറക്ടർ)" />
                   <ScheduleItem time="02:45 PM" tag="Session 02" title="ദർശനം" desc="ഡോ. ഇദ് രീസ്" />
-                  <ScheduleItem time="04:00 PM" title="(ബ്രേക്ക്)" isBreak />
+                  <ScheduleItem time="04:00 PM" title="ബ്രേക്ക്" isBreak />
                   <ScheduleItem time="04:15 PM" tag="Session 03" title="സ്പർശം" desc="അബൂബക്കർ ഹുദവി" />
                   <ScheduleItem time="05:30 PM" title="പ്രാർത്ഥന, ചായ, ഉല്ലാസം" isBreak />
                   <ScheduleItem time="07:00 PM" tag="Session 04" title="വശ്യം" desc="ഡോ.അബ്ദുൽ ബർറ് വാഫി" />
@@ -196,10 +196,10 @@ export default function ConceptPage() {
   </tr>
                   
                   <ScheduleItem time="05:00 AM" title="പ്രാർത്ഥന" isBreak />
-                  <ScheduleItem time="06:00 AM" tag="Session 07" title="ദൃശ്യം" desc="(Morning Vibe)" />
+                  <ScheduleItem time="06:00 AM" tag="Session 07" title="ദൃശ്യം" desc="(മോർണിംഗ് വൈബ്)" />
                   <ScheduleItem time="08:00 AM" title="പ്രഭാത ഭക്ഷണം" isBreak />
                   <ScheduleItem time="08:30 AM" tag="Session 07" title="ദിശൻ" desc="(ബ്രെയിൻ സ്റ്റോമിംഗ്)" />
-                  <ScheduleItem time="10:00 AM" title="(Break)" isBreak />
+                  <ScheduleItem time="10:00 AM" title="ബ്രേക്ക്" isBreak />
                   <ScheduleItem time="10:15 AM" tag="Session 09" title="സമന്വയം" desc="(ചർച്ച)" />
                   <ScheduleItem time="11:30 AM" tag="Session 10" title="സമാപ്തി" desc="(ക്ലോസിങ് സെറിമണി)" />
                 </tbody>
