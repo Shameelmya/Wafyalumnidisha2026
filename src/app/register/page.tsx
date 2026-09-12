@@ -176,15 +176,15 @@ export default function ConceptPage() {
   </tr>
                   <ScheduleItem time="01:30 PM" title="റിപ്പോർട്ടിംഗ്" />
                   <ScheduleItem time="02:00 PM" title="രജിസ്ട്രേഷൻ" />
-                  <ScheduleItem time="02:30 PM" tag="Session 01" title="പഥം" desc="🎙️ ഡോ. നൗഫൽ വാഫി മേലാറ്റൂർ (ക്യാമ്പ് ഡയറക്ടർ)" />
-                  <ScheduleItem time="02:45 PM" tag="Session 02" title="ദർശനം" desc="🎙️ ഡോ. ഇദ് രീസ്" />
+                  <ScheduleItem time="02:30 PM" tag="Session 01" title="പഥം" desc="ഡോ. നൗഫൽ വാഫി മേലാറ്റൂർ (ക്യാമ്പ് ഡയറക്ടർ)" />
+                  <ScheduleItem time="02:45 PM" tag="Session 02" title="ദർശനം" desc="ഡോ. ഇദ് രീസ്" />
                   <ScheduleItem time="04:00 PM" title="(ബ്രേക്ക്)" isBreak />
-                  <ScheduleItem time="04:15 PM" tag="Session 03" title="സ്പർശം" desc="🎙️ അബൂബക്കർ ഹുദവി" />
+                  <ScheduleItem time="04:15 PM" tag="Session 03" title="സ്പർശം" desc="അബൂബക്കർ ഹുദവി" />
                   <ScheduleItem time="05:30 PM" title="പ്രാർത്ഥന, ചായ, ഉല്ലാസം" isBreak />
-                  <ScheduleItem time="07:00 PM" tag="Session 04" title="വശ്യം" desc="🎙️ ഡോ.അബ്ദുൽ ബർറ് വാഫി" />
-                  <ScheduleItem time="07:30 PM" tag="Session 05" title="ദീപ്തി" desc="🎙️ ഉസ്താദ് അബ്ദുൽ ഹക്കീം ഫൈസി ആദൃശ്ശേരി" />
+                  <ScheduleItem time="07:00 PM" tag="Session 04" title="വശ്യം" desc="ഡോ.അബ്ദുൽ ബർറ് വാഫി" />
+                  <ScheduleItem time="07:30 PM" tag="Session 05" title="ദീപ്തി" desc="ഉസ്താദ് അബ്ദുൽ ഹക്കീം ഫൈസി ആദൃശ്ശേരി" />
                   <ScheduleItem time="09:00 PM" title="പ്രാർത്ഥന, ഭക്ഷണം" isBreak />
-                  <ScheduleItem time="10:00 PM" tag="Session 06" title="സ്ഫുരണം" desc="🎙️ ഡോ.അലി ഹുസൈൻ വാഫി" />
+                  <ScheduleItem time="10:00 PM" tag="Session 06" title="സ്ഫുരണം" desc="ഡോ.അലി ഹുസൈൻ വാഫി" />
                   
                   <tr>
     <td colSpan={2} style={{ padding: '32px 0 24px 0' }}>
