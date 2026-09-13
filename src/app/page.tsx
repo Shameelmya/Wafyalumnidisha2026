@@ -89,8 +89,8 @@ export default function Home() {
           <Link href="/get-pass" className="btn-secondary" style={{ flex: 1, padding: '16px 0' }}>
             Get Pass
           </Link>
-          <a href="https://maps.app.goo.gl/kuQ67dZKdnrNCC6Q6" target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ flex: 1, padding: '16px 0' }}>
-            Location
+          <a href="https://drive.google.com/drive/folders/1_AeffRs81XU_gC23jnaorRvkAeIymtBF?usp=sharing" target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ flex: 1, padding: '16px 0' }}>
+            Gallery
           </a>
         </div>
 
