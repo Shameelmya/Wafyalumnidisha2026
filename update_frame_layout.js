@@ -1,4 +1,6 @@
-"use client";
+const fs = require('fs');
+
+const fileContent = `"use client";
 
 import { useState, useRef } from 'react';
 import Link from 'next/link';
@@ -40,7 +42,7 @@ export default function FramePage() {
       const image = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = image;
-      link.download = `Framed_Photo.png`;
+      link.download = \`Framed_Photo.png\`;
       link.click();
     }
   };
@@ -55,7 +57,7 @@ export default function FramePage() {
       });
       canvas.toBlob(async (blob) => {
         if (blob) {
-          const file = new File([blob], `Framed_Photo.png`, { type: 'image/png' });
+          const file = new File([blob], \`Framed_Photo.png\`, { type: 'image/png' });
           try {
             await navigator.share({
               title: 'DISHA 2026',
@@ -73,12 +75,12 @@ export default function FramePage() {
   };
 
   const getFilterStyle = () => {
-    let filters = `contrast(${contrast}%) saturate(${saturation}%) brightness(${brightness}%)`;
+    let filters = \`contrast(\${contrast}%) saturate(\${saturation}%) brightness(\${brightness}%)\`;
     if (temperature > 0) {
-      filters += ` sepia(${temperature}%) hue-rotate(-${temperature / 2}deg)`;
+      filters += \` sepia(\${temperature}%) hue-rotate(-\${temperature / 2}deg)\`;
     } else if (temperature < 0) {
       const coolVal = Math.abs(temperature);
-      filters += ` hue-rotate(${coolVal / 2}deg) sepia(${coolVal / 2}%) saturate(${100 + coolVal}%)`;
+      filters += \` hue-rotate(\${coolVal / 2}deg) sepia(\${coolVal / 2}%) saturate(\${100 + coolVal}%)\`;
     }
     return filters;
   };
@@ -261,3 +263,7 @@ export default function FramePage() {
     </div>
   );
 }
+`;
+
+fs.writeFileSync('src/app/frame/page.tsx', fileContent);
+console.log('UI structure rewritten');
