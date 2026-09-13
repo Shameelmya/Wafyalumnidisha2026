@@ -110,6 +110,23 @@ export default function FramePage() {
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
           {/* Always show Preview Area first once photo is uploaded */}
+          
+          {frameType !== 'none' && (
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
+              <button 
+                onClick={() => setFrameType(frameType === 'PTR' ? 'LSC' : 'PTR')}
+                className="btn-secondary"
+                style={{
+                  padding: '8px 16px',
+                  fontSize: '0.9rem',
+                  borderRadius: '20px'
+                }}
+              >
+                Change frame to {frameType === 'PTR' ? 'Landscape' : 'Portrait'}
+              </button>
+            </div>
+          )}
+
           <div style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center' }}>
             <div 
               ref={exportRef}
@@ -144,42 +161,16 @@ export default function FramePage() {
                   alt="Frame" 
                   style={{ 
                     position: 'absolute', 
-                    top: 0, 
+                    top: 'auto', 
+                    bottom: 0, 
                     left: 0, 
                     width: '100%', 
-                    height: '100%', 
-                    objectFit: 'contain', 
-                    objectPosition: 'bottom',
+                    height: 'auto', 
                     pointerEvents: 'none'
                   }} 
                 />
               )}
             </div>
-
-            {/* Quick change frame button overlay */}
-            {frameType !== 'none' && (
-              <button 
-                onClick={() => setFrameType(frameType === 'PTR' ? 'LSC' : 'PTR')}
-                style={{
-                  position: 'absolute',
-                  top: '12px',
-                  right: '12px',
-                  background: 'rgba(0,0,0,0.6)',
-                  color: 'white',
-                  border: '1px solid rgba(255,255,255,0.3)',
-                  backdropFilter: 'blur(4px)',
-                  borderRadius: '20px',
-                  padding: '8px 16px',
-                  fontSize: '0.85rem',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  zIndex: 10,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
-                }}
-              >
-                Change to {frameType === 'PTR' ? 'Landscape' : 'Portrait'}
-              </button>
-            )}
           </div>
 
           {/* Controls */}
